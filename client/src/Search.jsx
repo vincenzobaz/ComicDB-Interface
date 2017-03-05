@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, ControlLabel, FormGroup, FormControl, Grid, Row, Col} from 'react-bootstrap';
+import {AdvancedSettings} from './AdvancedSettingsDialog.jsx';
 
 export class Search extends React.Component {
     constructor(props) {
@@ -7,7 +8,8 @@ export class Search extends React.Component {
         this.state = {
             searchBoxContent : '',
             searchString: '',
-            searching: false
+            searching: false,
+            showSettings: false,
         };
     }
 
@@ -22,7 +24,12 @@ export class Search extends React.Component {
         });
     }
 
-                //<Button> Advanced Options </Button>
+    toggleSettingsDialog() {
+        this.setState({
+            showSettings: !this.state.showSettings
+        });
+    }
+
     render() {
         return(
             <div className="search">
@@ -41,8 +48,15 @@ export class Search extends React.Component {
                     bsSize="large"
                     bsStyle="primary"
                     onClick={this.searchButtonHandler.bind(this)}>
-                    Search
+                        Search
                 </Button>
+                <Button
+                    bsStyle="success"
+                    onClick={this.toggleSettingsDialog.bind(this)}
+                    >
+                        Advanced Options
+                </Button>
+                {this.state.showSettings && <AdvancedSettings closeFunction={this.toggleSettingsDialog.bind(this)}/>}
                 {this.state.searching && <h2> Results </h2>}
                 {this.state.searching && <p> {"Searching " + this.state.searchString} </p>}
             </div>
