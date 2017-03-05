@@ -30,12 +30,6 @@ export class AdvancedSettings extends React.Component{
         this.map.set(this.state.tables[idx], enabled[idx]);
     }
 
-    createEnabledMap(list, values) {
-        let result = {};
-        list.forEach((t, i) => result[t] = values[i]);
-        return result;
-    }
-
     render() {
         return(
             <Modal.Dialog>
@@ -47,10 +41,8 @@ export class AdvancedSettings extends React.Component{
                         {this.state.tables.map((table, idx) => <Checkbox key={table} checked={this.state.enabled[idx]} onChange={this.handleClick.bind(this, idx)}> {table} </Checkbox>)}
             </Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        onClick={this.closeFunction.bind(this.createEnabledMap.bind(null, this.state.tables, this.state.enabled))}
-                        >
-                            Close
+                    <Button onClick={this.closeFunction}>
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal.Dialog>
