@@ -3,6 +3,7 @@ import {Button, ControlLabel, FormGroup, FormControl, Grid, Row, Col} from 'reac
 import {AdvancedSettings} from './AdvancedSettingsDialog.jsx';
 
 export class Search extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -10,7 +11,16 @@ export class Search extends React.Component {
             searchString: '',
             searching: false,
             showSettings: false,
+            enabledTables: null,
         };
+        this.fetchListTable();
+    }
+
+    fetchListTable() {
+        const addToState = ls => this.setState({enabledTables: new Map(ls.map(el => [el, false]))});
+        fetch("http://localhost:3000/tables_list", {
+            method: "get"
+        }).then(r => r.json()).then(addToState.bind(this));
     }
 
     handleChange(e) {
@@ -25,9 +35,8 @@ export class Search extends React.Component {
     }
 
     toggleSettingsDialog() {
-        this.setState({
-            showSettings: !this.state.showSettings
-        });
+        this.setState({showSettings: !this.state.showSettings})
+        console.log(this.state.enabledTables);
     }
 
     render() {
@@ -56,7 +65,7 @@ export class Search extends React.Component {
                     >
                         Advanced Options
                 </Button>
-                {this.state.showSettings && <AdvancedSettings closeFunction={this.toggleSettingsDialog.bind(this)}/>}
+                {this.state.showSettings && <AdvancedSettings enabledTables={this.state.enabledTables} closeFunction={this.toggleSettingsDialog.bind(this)}/>}
                 {this.state.searching && <h2> Results </h2>}
                 {this.state.searching && <p> {"Searching " + this.state.searchString} </p>}
             </div>
