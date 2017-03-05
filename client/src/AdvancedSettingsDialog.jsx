@@ -43,7 +43,7 @@ export class AdvancedSettings extends React.Component{
                     <Modal.Title>Advanced Search Settings</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Tables to search:
+                    <h4>Tables to search:</h4>
                         {this.state.tables.map((table, idx) => <Checkbox key={table} checked={this.state.enabled[idx]} onChange={this.handleClick.bind(this, idx)}> {table} </Checkbox>)}
             </Modal.Body>
                 <Modal.Footer>
