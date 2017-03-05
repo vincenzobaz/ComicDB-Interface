@@ -4,12 +4,11 @@ import {Button, FormGroup, Checkbox, Modal} from 'react-bootstrap';
 export class AdvancedSettings extends React.Component{
     constructor(props) {
         super(props);
-        const enabledTables = props.enabledTables;
 
         let tableList = [];
         let enabled = [];
 
-        enabledTables.forEach((v, k, m) => {
+        props.enabledTables.forEach((v, k, m) => {
             tableList.push(k);
             enabled.push(v);
         });
@@ -19,7 +18,7 @@ export class AdvancedSettings extends React.Component{
             enabled: enabled
         };
 
-        this.map = enabledTables;
+        this.map = props.enabledTables;
         this.closeFunction = props.closeFunction;
     }
 
