@@ -27,7 +27,8 @@ export class Search extends React.Component {
         this.setState({searchBoxContent: e.target.value});
     }
 
-    searchButtonHandler() {
+    searchButtonHandler(e) {
+        e.preventDefault();
         this.setState({
             searching: true,
             searchString: this.state.searchBoxContent
@@ -43,7 +44,7 @@ export class Search extends React.Component {
             <div className="search">
             <Grid>
                 <Row>
-                    <form>
+                    <form onSubmit={this.searchButtonHandler.bind(this)}>
                         <FormGroup>
                             <FormControl
                                 type="text"
