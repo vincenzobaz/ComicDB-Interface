@@ -13,5 +13,13 @@ const config = {
  * database
  */
 export function fetchTableLists() {
-    return fetch(config.url + '/tables_list', {method: 'get'}).then(r => r.json());
+    return fetch(config.url + 'tables_list', {method: 'get'}).then(r => r.json());
+}
+
+/**
+ * Returns a promise for search results based on search string and enabled tables
+ * @param {*string: , enabledTables} params 
+ */
+export function search(params) {
+    return new Promise((res, rej) => res("Search results for " + params.string + " here"));
 }
