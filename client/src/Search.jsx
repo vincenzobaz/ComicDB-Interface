@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, ControlLabel, FormGroup, FormControl, Grid, Row, Col} from 'react-bootstrap';
 import {AdvancedSettings} from './AdvancedSettingsDialog.jsx';
+import {fetchTableLists} from './ComicDBServer';
 
 export class Search extends React.Component {
 
@@ -13,14 +14,12 @@ export class Search extends React.Component {
             showSettings: false,
             enabledTables: null,
         };
-        this.fetchListTable();
+        this.retrieveTableNames();
     }
 
-    fetchListTable() {
+    retrieveTableNames() {
         const addToState = ls => this.setState({enabledTables: new Map(ls.map(el => [el, false]))});
-        fetch("http://localhost:3000/tables_list", {
-            method: "get"
-        }).then(r => r.json()).then(addToState.bind(this));
+        fetchTableLists.then(addToState.bind(this))
     }
 
     handleChange(e) {
