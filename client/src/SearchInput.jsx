@@ -66,9 +66,8 @@ export class SearchInput extends React.Component {
                         <Button
                             bsSize="large"
                             bsStyle="success"
-                            onClick={this.toggleSettingsDialog.bind(this)}
-                            >
-                                Advanced Options
+                            onClick={this.toggleSettingsDialog.bind(this)}>
+                            Advanced Options
                         </Button>
                     </Col>
                 </Row>

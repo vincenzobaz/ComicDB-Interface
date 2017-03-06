@@ -19,13 +19,13 @@ export class Search extends React.Component {
     render() {
         return(
             <div className="search">
-            <Grid>
                 <SearchInput onSearchClick={this.saveResults.bind(this)} />
-                <Row>
-                   {this.state.searchResult && <h2> Results </h2>}
-                    {this.state.searchResult && <p> {"Searching " + this.state.searchResult} </p>}
-               </Row>
-            </Grid>
+                <Grid>
+                    <Row>
+                    {this.state.searchResult && <h2> Results </h2>}
+                    {this.state.searchResult && <p> {this.state.searchResult} </p>}
+                </Row>
+                </Grid>
             </div>
         );
     }
