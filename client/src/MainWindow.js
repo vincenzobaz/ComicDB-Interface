@@ -1,6 +1,6 @@
 import React from 'react';
 import {Grid, PageHeader, Row, Tab, Tabs} from 'react-bootstrap';
-import {Search} from './Search.jsx';
+import {Search} from './Search.js';
 import {PredefQueries} from './PredefQueries.jsx';
 import {InsertDelete} from './InsertDelete.jsx';
 

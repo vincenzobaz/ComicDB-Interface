@@ -1,39 +1,27 @@
 import React from 'react';
 import {Button, ControlLabel, FormGroup, FormControl, Grid, Row, Col} from 'react-bootstrap';
-import {AdvancedSettings} from './AdvancedSettingsDialog.jsx';
-import {fetchTableLists, search} from './ComicDBServer';
+import {AdvancedSettings} from './AdvancedSettingsDialog.js';
+import {Server} from './ComicDBServer.js'
+import {connect} from 'react-redux';
+import {toggleSearchSettings, fetchTableListReceived, searchResultReceived} from './actions/index.js'
 
-export class SearchInput extends React.Component {
+class SearchInputV extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            searchBoxContent : '',
-            showSettings: false,
-            enabledTables: null,
-        };
-        this.retrieveTableNames();
-        this.saveResults = props.onSearchClick;
+        this.state = { searchBoxContent : '' };
     }
 
     onSearchClick(e) {
         e.preventDefault();
-        search({
-            string: this.state.searchBoxContent,
-            enabledTables: this.state.enabledTables
-        }).then(result => this.saveResults(result));
-    }
-
-    retrieveTableNames() {
-        const addToState = ls => this.setState({enabledTables: new Map(ls.map(el => [el, false]))});
-        fetchTableLists().then(addToState.bind(this))
+        this.props.onSearchRun(this.state.searchBoxContent);
+        this.props.onSearchRun({
+		string: this.state.searchBoxContent,
+		enabledTables: this.props.enabledTables.filter(v => v).toArray()
+	});
     }
 
     handleChange(e) {
         this.setState({searchBoxContent: e.target.value});
-    }
-
-    toggleSettingsDialog() {
-        this.setState({showSettings: !this.state.showSettings})
     }
 
     render() {
@@ -66,15 +54,33 @@ export class SearchInput extends React.Component {
                         <Button
                             bsSize="large"
                             bsStyle="success"
-                            onClick={this.toggleSettingsDialog.bind(this)}>
+                            onClick={this.props.onShowSettings}>
                             Advanced Options
                         </Button>
                     </Col>
                 </Row>
                <Row>
-                    {this.state.showSettings && <AdvancedSettings enabledTables={this.state.enabledTables} closeFunction={this.toggleSettingsDialog.bind(this)}/>}
+		       {this.props.showSettings && <AdvancedSettings/>}
                </Row>
                </Grid>
         );
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSearchRun: (args) =>
+            Server.search(args).then(result => dispatch(searchResultReceived(result))),
+        onShowSettings: () => dispatch(toggleSearchSettings())
+    };
+};
+
+const mapStateToProps = (state = new Map()) => {
+    return {
+        enabledTables: state.get('tables'),
+        showSettings: state.get('showAdvancedSettings', false)
+    }
+}
+
+export const SearchInput = connect(mapStateToProps, mapDispatchToProps)(SearchInputV);
+
