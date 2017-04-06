@@ -1,9 +1,9 @@
 import React from 'react';
-import {Button, ControlLabel, FormGroup, FormControl, Grid, Row, Col} from 'react-bootstrap';
+import {Button, FormGroup, FormControl, Grid, Row, Col} from 'react-bootstrap';
 import {AdvancedSettings} from './AdvancedSettingsDialog.js';
 import {Server} from './ComicDBServer.js'
 import {connect} from 'react-redux';
-import {toggleSearchSettings, fetchTableListReceived, searchResultReceived} from './actions/index.js'
+import {toggleSearchSettings, searchResultReceived} from './actions/index.js'
 
 class SearchInputV extends React.Component {
     constructor(props) {

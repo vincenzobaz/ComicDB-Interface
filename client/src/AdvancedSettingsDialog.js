@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, FormGroup, Checkbox, Modal} from 'react-bootstrap';
+import {Button, Checkbox, Modal} from 'react-bootstrap';
 import {Map, OrderedMap} from 'immutable';
 import {searchToggleTable, toggleSearchSettings} from './actions/index.js';
 import {connect} from 'react-redux';

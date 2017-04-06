@@ -3,7 +3,7 @@ import {Grid, Row} from 'react-bootstrap';
 import {SearchInput} from './SearchInput.js';
 import {Server} from './ComicDBServer.js'
 import {connect} from 'react-redux';
-import {fetchTableListReceived, searchResultReceived} from './actions/index.js'
+import {fetchTableListReceived} from './actions/index.js'
 
 function SearchV({searchResults}) {
     return(
