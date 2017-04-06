@@ -4,8 +4,8 @@ import {Map, OrderedMap} from 'immutable'
 export const searchReducer = (state = new Map(), action) => {
 	switch (action.type) {
 		case 'SEARCH_TOGGLE_TABLE' :
-			let newState = !state.get('tables')[action.tableName];
-			let newTables = state.get('tables').set(action.tableName, newState);
+			let pageEnabled = !state.get('tables').get(action.tableName);
+			let newTables = state.get('tables').set(action.tableName, pageEnabled);
 			return state.set('tables', newTables);
 		case 'FETCH_TABLE_LIST_REQUEST':
 			return state.set('fetchTableList', 'pending');

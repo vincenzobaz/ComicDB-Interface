@@ -12,7 +12,13 @@ function AdvancedSettingsDialogV({enabledTables, toggleTable, onClose}) {
             </Modal.Header>
             <Modal.Body>
                 <h4>Tables to search:</h4>
-                    {enabledTables.map((enabled, table) => <Checkbox key={table} checked={enabled} onChange={toggleTable.bind(null, table)}> {table} </Checkbox>)}
+                    {enabledTables.map((enabled, table) =>
+			    <Checkbox
+			    	key={table}
+			    	checked={enabled}
+			        onChange={toggleTable.bind(null, table)}>
+				    {table}
+			    </Checkbox>)}
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={onClose}>
@@ -21,7 +27,7 @@ function AdvancedSettingsDialogV({enabledTables, toggleTable, onClose}) {
             </Modal.Footer>
         </Modal.Dialog>
     );
-}
+};
 
 const mapStateToProps = (state = new Map()) => {
     return {
@@ -36,4 +42,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export const AdvancedSettings = connect(mapStateToProps, mapDispatchToProps)(AdvancedSettingsDialogV)
+export const AdvancedSettings = connect(mapStateToProps,
+					mapDispatchToProps)
+				(AdvancedSettingsDialogV)
