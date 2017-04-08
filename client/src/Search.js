@@ -1,6 +1,6 @@
 import React from 'react';
 import {Grid, Row, Well} from 'react-bootstrap';
-import {SearchInput} from './SearchInput.js';
+import {SearchInput} from './components/search/SearchInput.js';
 import {Server} from './ComicDBServer.js'
 import {connect} from 'react-redux';
 import {fetchTableListReceived} from './actions/index.js'
