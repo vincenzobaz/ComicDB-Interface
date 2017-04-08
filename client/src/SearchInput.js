@@ -3,7 +3,7 @@ import {Button, FormGroup, FormControl, Grid, Row, Col} from 'react-bootstrap';
 import {AdvancedSettings} from './AdvancedSettingsDialog.js';
 import {Server} from './ComicDBServer.js'
 import {connect} from 'react-redux';
-import {toggleSearchSettings, searchResultReceived} from './actions/index.js'
+import {toggleSearchSettings, searchResultReceived} from './actions/search.js'
 
 class SearchInputV extends React.Component {
     constructor(props) {
@@ -75,10 +75,10 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-const mapStateToProps = (state = new Map()) => {
+const mapStateToProps = (state) => {
     return {
-        enabledTables: state.get('tables'),
-        showSettings: state.get('showAdvancedSettings', false)
+        enabledTables: state.get('search').get('enabledTables'),
+        showSettings: state.get('search').get('showAdvancedSettings', false)
     }
 }
 

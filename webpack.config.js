@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   // entry file for bundling
-  entry: path.join(__dirname, '/client/src/app.jsx'),
+  entry: path.join(__dirname, '/client/src/app.js'),
 
   // bundle file output
   output: {
@@ -13,7 +13,7 @@ module.exports = {
   module: {
     //apply loaders to files that meet given condition
     loaders: [{
-      test: /\.jsx?$/,
+      test: /\.js?$/,
       include: path.join(__dirname, '/client/src'),
       loader: 'babel-loader',
       query: {

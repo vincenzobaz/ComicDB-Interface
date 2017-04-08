@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, PageHeader, Row, Tab, Tabs} from 'react-bootstrap';
 import {Search} from './Search.js';
-import {PredefQueries} from './PredefQueries.jsx';
+import {PredefQueries} from './PredefQueries.js';
 import {InsertDelete} from './InsertDelete.js';
 
 export function MainWindow(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Checkbox, Modal} from 'react-bootstrap';
 import {Map, OrderedMap} from 'immutable';
-import {searchToggleTable, toggleSearchSettings} from './actions/index.js';
+import {searchToggleTable, toggleSearchSettings} from './actions/search.js';
 import {connect} from 'react-redux';
 
 function AdvancedSettingsDialogV({enabledTables, toggleTable, onClose}) {
@@ -29,9 +29,9 @@ function AdvancedSettingsDialogV({enabledTables, toggleTable, onClose}) {
     );
 };
 
-const mapStateToProps = (state = new Map()) => {
+const mapStateToProps = (state) => {
     return {
-        enabledTables: state.get('tables', new OrderedMap())
+        enabledTables: state.get('search').get('enabledTables', new OrderedMap())
     };
 };
 

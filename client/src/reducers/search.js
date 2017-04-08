@@ -1,29 +1,22 @@
-//import {combineReducers} from 'redux'
 import {Map, OrderedMap} from 'immutable'
 
-export const searchReducer = (state = new Map(), action) => {
+export const searchReducer = (state, action) => {
+	let s = state.get('search', new Map());
 	switch (action.type) {
 		case 'SEARCH_TOGGLE_TABLE' :
-			let pageEnabled = !state.get('tables').get(action.tableName);
-			let newTables = state.get('tables').set(action.tableName, pageEnabled);
-			return state.set('tables', newTables);
-		case 'FETCH_TABLE_LIST_REQUEST':
-			return state.set('fetchTableList', 'pending');
-		case 'FETCH_TABLE_LIST_RECEIVED':
-			let tables = OrderedMap(action.list.map(t => [t, true]));
-			//let state = state.set('fetchTableList', 'success');
-			return state.set('tables', tables);
+			let pageEnabled = !s.get('enabledTables').get(action.tableName);
+			let newTables = s.get('enabledTables').set(action.tableName, pageEnabled);
+			s = s.set('enabledTables', newTables);
+			break;
 		case 'SEARCH_SETTINGS_TOGGLE':
-			return state.set('showAdvancedSettings', !state.get('showAdvancedSettings', false));
+			s = s.set('showAdvancedSettings', !s.get('showAdvancedSettings', false));
+			break;
 		case 'SEARCH_RESULT_RECEIVED':
-			return state.set('searchResults', action.data);
+			s = s.set('searchResults', action.data)
+			break;
 		default:
 			return state;
 	}
+	return state.set('search', s);
 }
-
-//const reducer = combineReducers({search});
-
-//export default reducer;
-//export searchReducer;
 

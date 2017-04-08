@@ -24,9 +24,9 @@ const mapDispatchToProps = (dispatch) => {
     return {};
 }
 
-const mapStateToProps = (state = new Map()) => {
+const mapStateToProps = (state) => {
     return {
-        searchResults: state.get('searchResults', false),
+        searchResults: state.get('data').get('searchResults', false),
     };
 }
 
