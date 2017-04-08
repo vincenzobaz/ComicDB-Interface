@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Row} from 'react-bootstrap';
+import {Grid, Row, Well} from 'react-bootstrap';
 import {SearchInput} from './SearchInput.js';
 import {Server} from './ComicDBServer.js'
 import {connect} from 'react-redux';
@@ -12,7 +12,7 @@ function SearchV({searchResults}) {
             <Grid>
                 <Row>
                     {searchResults && <h2> Results </h2>}
-                    {searchResults && <p> {searchResults} </p>}
+                    {searchResults && <Well><p> {searchResults} </p></Well>}
                 </Row>
             </Grid>
         </div>
