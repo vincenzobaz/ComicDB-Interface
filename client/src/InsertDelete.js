@@ -1,19 +1,31 @@
 import React from 'react';
 import {Button, Col, Grid, Row} from 'react-bootstrap';
+import {TablePicker} from './components/insertdel/TablePicker.js';
+import {connect} from 'react-redux';
 
-export function InsertDelete(props) {
+export function InsertDeleteV({activePanel}) {
 	return(
 		<div className='insdel'>
-		<Grid>
-			<Col md={2}>Choose Table </Col>
-			<button type="button">Click me </button>
-		<Col md={7}> lalalalalalalalalal </Col>
-		</Grid>
+			<Grid>
+				<Col md={2}><TablePicker/></Col>
+				<Col md={7}> {chooseMask(activePanel)} </Col>
+			</Grid>
 		</div>
 	);
 };
 
-/*
- *				<Button bsSize='large' block> Stories </Button>
-				<Button bsSize='large' block> Issues </Button>
- */
+const chooseMask = (activePanel) => {
+	switch (activePanel) {
+		case 'Authors':
+			return(<h2> HELLLOOOO </h2>);
+	}
+}
+
+const mapStateToProps = (state) => {
+	return {
+		activePanel: state.get('insertdel').get('activePanel')
+	};
+};
+
+export const InsertDelete = connect(mapStateToProps)(InsertDeleteV);
+

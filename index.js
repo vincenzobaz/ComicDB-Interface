@@ -17,5 +17,5 @@ app.listen(3000, () => {
 
 app.get('/tables_list', (req, res) => {
   res.send(tables_names_SAMPLE);
-  console.log("Sent list of tables");
 })
+

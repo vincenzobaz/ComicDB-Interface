@@ -6,3 +6,10 @@
 .insdel {
     padding-top: 25px;
 }
+
+.tablepicker {
+    text-align: center;
+    border-right: 1px solid #DCDCDC;
+    padding-right: 15px;
+}
+
