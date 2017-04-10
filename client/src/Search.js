@@ -3,7 +3,7 @@ import {Grid, Row, Well} from 'react-bootstrap';
 import {SearchInput} from './components/search/SearchInput.js';
 import {Server} from './ComicDBServer.js'
 import {connect} from 'react-redux';
-import {fetchTableListReceived} from './actions/index.js'
+import {tablelist} from './actions/index.js'
 
 function SearchV({searchResults}) {
 	console.log("HELLOOOO " + searchResults)
@@ -21,7 +21,7 @@ function SearchV({searchResults}) {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    Server.fetchTableList().then(ls => dispatch(fetchTableListReceived(ls)));
+    dispatch(tablelist());
     return {};
 }
 
@@ -32,3 +32,4 @@ const mapStateToProps = (state) => {
 }
 
 export const Search = connect(mapStateToProps, mapDispatchToProps)(SearchV);
+

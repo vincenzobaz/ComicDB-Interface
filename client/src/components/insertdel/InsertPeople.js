@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, ControlLabel, FormControl, FormGroup, HelpBlock} from 'react-bootstrap';
+import {insert} from './../../actions/insertdel.js';
 
 class InsertPeopleV extends React.Component {
 	constructor(props) {
@@ -49,10 +50,10 @@ class InsertPeopleV extends React.Component {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		submit: t => console.log(t)
+		submit: name => dispatch(insert('People', {name: name}))
 	};
 };
 
-export const InsertPeople = connect(mapDispatchToProps)(InsertPeopleV)
+export const InsertPeople = connect(null, mapDispatchToProps)(InsertPeopleV)
 
 

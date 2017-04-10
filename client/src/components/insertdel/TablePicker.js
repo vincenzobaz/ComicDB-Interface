@@ -2,7 +2,7 @@ import React from 'react';
 import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {Server} from './../../ComicDBServer.js'
-import {fetchTableListReceived} from './../../actions/index.js'
+import {tablelist} from './../../actions/index.js'
 import {activateInsertPanel} from './../../actions/insertdel.js'
 
 function TablePickerV({activePanel, tableList, activatePanel}) {
@@ -29,7 +29,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => {
-    Server.fetchTableList().then(ls => dispatch(fetchTableListReceived(ls)));
+    dispatch(tablelist());
     return {
 	    activatePanel: t => dispatch(activateInsertPanel(t))
     };

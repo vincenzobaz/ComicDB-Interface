@@ -1,10 +1,10 @@
 import {searchReducer} from './search.js';
 import {insertReducer} from './insertdel.js';
-import {List, Map, OrderedMap} from 'immutable';
+import {List, Map, OrderedMap, Set} from 'immutable';
 
 const freshState = () => new Map().set('data', new Map())
 				  .set('search', new Map())
-                                  .set('insertdel', new Map());
+                                  .set('insertdel', new Map().set('pending', new Set()));
 
 export const reducer = (state = freshState(), action) => {
 	let d = state.get('data', new Map());

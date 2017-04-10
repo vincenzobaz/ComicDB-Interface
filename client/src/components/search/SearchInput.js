@@ -3,7 +3,7 @@ import {Button, FormGroup, FormControl, Grid, Row, Col} from 'react-bootstrap';
 import {AdvancedSettings} from './AdvancedSettingsDialog.js';
 import {Server} from './../../ComicDBServer.js'
 import {connect} from 'react-redux';
-import {toggleSearchSettings, searchResultReceived} from './../../actions/search.js'
+import {search} from './../../actions/search.js'
 
 class SearchInputV extends React.Component {
     constructor(props) {
@@ -69,8 +69,7 @@ class SearchInputV extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSearchRun: (args) =>
-            Server.search(args).then(result => dispatch(searchResultReceived(result))),
+        onSearchRun: args => dispatch(search(args)),
         onShowSettings: () => dispatch(toggleSearchSettings())
     };
 };
