@@ -1,6 +1,8 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.json());
 
 // Variable to test table listing, only as long as databse interaction
 // is not set up
@@ -17,5 +19,9 @@ app.listen(3000, () => {
 
 app.get('/tables_list', (req, res) => {
   res.send(tables_names_SAMPLE);
-})
+});
+
+app.post('/insert', (req, res) => {
+	console.log(req.body)
+});
 
