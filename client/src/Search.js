@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {fetchTableListReceived} from './actions/index.js'
 
 function SearchV({searchResults}) {
+	console.log("HELLOOOO " + searchResults)
     return(
         <div className="search">
             <SearchInput />
@@ -26,7 +27,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        searchResults: state.get('data').get('searchResults', false),
+        searchResults: state.get('search').get('searchResults', false),
     };
 }
 
