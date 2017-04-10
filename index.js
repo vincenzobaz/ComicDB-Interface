@@ -4,7 +4,7 @@ const app = express();
 
 // Variable to test table listing, only as long as databse interaction
 // is not set up
-const tables_names_SAMPLE = ['Authors', 'Titles', 'Countries'];
+const tables_names_SAMPLE = ['Authors', 'Titles', 'People', 'Countries'];
 
 // Static file serving
 app.use(express.static('./server/static/'));

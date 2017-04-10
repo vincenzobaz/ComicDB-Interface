@@ -14,7 +14,6 @@ function TablePickerV({activePanel, tableList, activatePanel}) {
 					key={t}
 					active={activePanel == t}
 					bsSize='large'
-					bsStyle='danger'
 					onClick={activatePanel.bind(null, t)}
 					block> {t} </Button>)}
 			</div>
