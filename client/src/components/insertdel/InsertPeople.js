@@ -43,7 +43,6 @@ class InsertPeopleV extends React.Component {
 					Add to database
 				</Button>
 			</form>
-
 		);
 	}
 }
@@ -55,5 +54,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 export const InsertPeople = connect(null, mapDispatchToProps)(InsertPeopleV)
-
 

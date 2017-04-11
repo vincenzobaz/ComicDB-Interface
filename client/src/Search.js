@@ -5,8 +5,7 @@ import {Server} from './ComicDBServer.js'
 import {connect} from 'react-redux';
 import {tablelist} from './actions/index.js'
 
-function SearchV({searchResults}) {
-	console.log("HELLOOOO " + searchResults)
+const SearchV = ({searchResults}) => {
     return(
         <div className="search">
             <SearchInput />

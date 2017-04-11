@@ -5,7 +5,7 @@ import {Server} from './../../ComicDBServer.js'
 import {tablelist} from './../../actions/index.js'
 import {activateInsertPanel} from './../../actions/insertdel.js'
 
-function TablePickerV({activePanel, tableList, activatePanel}) {
+const TablePickerV = ({activePanel, tableList, activatePanel}) => {
 	return(
 		<div className="tablepicker">
 			<h4> Choose a table </h4>

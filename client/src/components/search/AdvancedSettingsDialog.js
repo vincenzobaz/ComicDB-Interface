@@ -4,7 +4,7 @@ import {Map, OrderedMap} from 'immutable';
 import {searchToggleTable, toggleSearchSettings} from '../../actions/search.js';
 import {connect} from 'react-redux';
 
-function AdvancedSettingsDialogV({enabledTables, toggleTable, onClose}) {
+const AdvancedSettingsDialogV = ({enabledTables, toggleTable, onClose}) => {
     return(
         <Modal.Dialog>
             <Modal.Header>

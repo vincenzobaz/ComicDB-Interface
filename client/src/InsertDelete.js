@@ -4,7 +4,7 @@ import {TablePicker} from './components/insertdel/TablePicker.js';
 import {connect} from 'react-redux';
 import {InsertPeople} from './components/insertdel/InsertPeople.js'
 
-export function InsertDeleteV({activePanel}) {
+const InsertDeleteV = ({activePanel}) => {
 	return(
 		<div className='insdel'>
 			<Grid>
