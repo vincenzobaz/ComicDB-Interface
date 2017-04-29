@@ -13,3 +13,18 @@
     padding-right: 15px;
 }
 
+.adv-search-settings-button {
+  float: right;
+  display: inline;
+}
+
+.page-header {
+  text-align: center;
+}
+.insertpublishers {
+    text-align: right;
+}
+
+h2 {
+    text-align: center;
+}
