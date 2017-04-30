@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --use_strict index.js",
+    "start": "nodemon --use_strict server/src/index.js",
     "bundle": "webpack"
   },
   "author": "vincenzobaz",
   "license": "ISC",
   "dependencies": {
+    "basic-auth": "^1.1.0",
     "body-parser": "^1.17.1",
     "express": "^4.15.0",
     "immutable": "^3.8.1",

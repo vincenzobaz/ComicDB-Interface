@@ -9,7 +9,7 @@ const config = {
 
 
 const headers = new Headers({
-	'Content-Type' : 'application/json'
+    'Content-Type' : 'application/json',
 });
 
 /**
@@ -17,7 +17,7 @@ const headers = new Headers({
  * database
  */
 function fetchTableList() {
-    return fetch(config.url + 'tables_list', {method: 'get'}).then(r => r.json());
+    return fetch(config.url + 'tables_list', {method: 'get', headers: headers}).then(r => r.json());
 }
 
 /**
@@ -33,21 +33,31 @@ function search(params) {
  */
 function insert(dstTable, objToAdd, reqId) {
     let request = new Request(
-    	config.url + 'insert', {
-		headers: headers,
-		method: 'POST',
-		body: JSON.stringify({
-			dstTable,
-			objToAdd,
-			reqId
-		})
-	}
+        config.url + 'insert', {
+            headers: headers,
+            method: 'POST',
+            body: JSON.stringify({
+                dstTable,
+                objToAdd,
+                reqId
+            })
+        }
     ); // TODO: Error handling
-    return fetch(request).then(resp => resp.json()).then(r => r.reqId);
+    return fetch(request).then(resp => console.log(resp))
+}
+
+function login(user, pass) {
+    const token = 'Basic ' + btoa(user +':' + pass);
+    headers.set('Authorization', token);
+    return fetch(config.url + 'login', {
+        method: 'get',
+        headers: headers
+    }).then(res => res.ok);
 }
 
 export const Server = {
-	fetchTableList,
-	insert,
-	search
-}
+    fetchTableList,
+    insert,
+    search,
+    login
+};
