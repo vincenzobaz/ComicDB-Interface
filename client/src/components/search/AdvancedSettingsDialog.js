@@ -4,9 +4,9 @@ import {Map, OrderedMap} from 'immutable';
 import {searchToggleTable, toggleSearchSettings} from '../../actions/search.js';
 import {connect} from 'react-redux';
 
-const AdvancedSettingsDialogV = ({enabledTables, toggleTable, onClose}) => {
+const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose}) => {
     return(
-        <Modal.Dialog>
+        <Modal show={show}>
             <Modal.Header>
                 <Modal.Title>Advanced Search Settings</Modal.Title>
             </Modal.Header>
@@ -25,12 +25,13 @@ const AdvancedSettingsDialogV = ({enabledTables, toggleTable, onClose}) => {
                     Close
                 </Button>
             </Modal.Footer>
-        </Modal.Dialog>
+        </Modal>
     );
 };
 
 const mapStateToProps = (state) => {
     return {
+        show: state.get('search').get('showAdvancedSettings', false),
         enabledTables: state.get('search').get('enabledTables', new OrderedMap())
     };
 };
@@ -39,9 +40,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         toggleTable: table => dispatch(searchToggleTable(table)),
         onClose: () => dispatch(toggleSearchSettings())
-    }
+    };
 };
 
 export const AdvancedSettings = connect(mapStateToProps,
 					mapDispatchToProps)
-				(AdvancedSettingsDialogV)
+				(AdvancedSettingsDialogV);

@@ -27,8 +27,8 @@ export const searchRequest = (string) => {
 	};
 };
 
-export const search = string => dispatch => {
-	dispatch(searchRequest(string));
-	return Server.search(string).then(r => dispatch(searchResultReceived(r)));
+export const search = args => dispatch => {
+	dispatch(searchRequest(args.string));
+	return Server.search(args).then(r => dispatch(searchResultReceived(r)));
 };
 

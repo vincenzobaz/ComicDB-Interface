@@ -25,7 +25,11 @@ function fetchTableList() {
  * @param {*string: , enabledTables} params
  */
 function search(params) {
-    return new Promise((res, rej) => res("Search results for " + params.string + " here"));
+    return fetch(config.url + 'search', {
+        method: 'post',
+        headers: headers,
+        body: JSON.stringify(params)
+    }).then(r => r.json());
 }
 
 /**

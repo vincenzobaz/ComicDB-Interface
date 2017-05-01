@@ -12,7 +12,7 @@ export const searchReducer = (state, action) => {
 			s = s.set('showAdvancedSettings', !s.get('showAdvancedSettings', false));
 			break;
 		case 'SEARCH_RESULT_RECEIVED':
-			s = s.set('searchResults', action.data)
+			s = s.set('searchResults', action.data);
 			break;
 		default:
 			return state;

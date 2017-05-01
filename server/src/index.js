@@ -4,6 +4,7 @@ const mysql = require('mysql');
 const connectionParameters = require('./../../conpars.json');
 const authentication = require('./auth.js').auth;
 const insert = require('./insert.js');
+const search = require('./search.js');
 
 const connection = mysql.createConnection(connectionParameters);
 
@@ -22,16 +23,7 @@ app.use(express.static('./client/dist/'));
 
 app.get('/login', authentication, (req, res) => res.send(200, 'Authenticated'));
 
-// Start server
-app.listen(3000, () => {
-  console.log('Server is running');
-});
-
-app.get('/tables_list', authentication, (req, res) => {
-    res.send(tables_names_SAMPLE);
-});
-
-app.post('/insert', authentication, insert(connection));
+app.get('/tables_list', authentication, (req, res) => res.send(tables_names_SAMPLE));
 
 app.get('/countries', authentication, (req, res) => {
     connection.query('SELECT * FROM Countries',
@@ -41,3 +33,13 @@ app.get('/countries', authentication, (req, res) => {
       }
     );
 });
+
+app.post('/insert', authentication, insert(connection));
+
+app.post('/search', authentication, search(connection));
+
+// Start server
+app.listen(3000, () => {
+  console.log('Server is running');
+});
+

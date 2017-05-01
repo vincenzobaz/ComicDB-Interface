@@ -1,9 +1,9 @@
-    import React from 'react';
+import React from 'react';
 import {Button, FormGroup, FormControl, Grid, Row, Col} from 'react-bootstrap';
 import {AdvancedSettings} from './AdvancedSettingsDialog.js';
-import {Server} from './../../ComicDBServer.js'
+import {Server} from './../../ComicDBServer.js';
 import {connect} from 'react-redux';
-import {search, toggleSearchSettings} from './../../actions/search.js'
+import {search, toggleSearchSettings} from './../../actions/search.js';
 
 class SearchInputV extends React.Component {
     constructor(props) {
@@ -13,11 +13,10 @@ class SearchInputV extends React.Component {
 
     onSearchClick(e) {
         e.preventDefault();
-        this.props.onSearchRun(this.state.searchBoxContent);
         this.props.onSearchRun({
-      		string: this.state.searchBoxContent,
-      		enabledTables: this.props.enabledTables.filter(v => v).toArray()
-      	});
+            string: this.state.searchBoxContent,
+            enabledTables: this.props.enabledTables.filter(v => v).keySeq().toArray()
+        });
     }
 
     handleChange(e) {
@@ -25,33 +24,35 @@ class SearchInputV extends React.Component {
     }
 
     render() {
-      return (
-        <form onSubmit={this.onSearchClick.bind(this)}>
-          <FormGroup>
-              <FormControl
-                  type="text"
-                  value={this.state.searchBoxContent}
-                  placeholder="Type here to search"
-                  onChange={this.handleChange.bind(this)}
-              />
-              <FormControl.Feedback/>
-          </FormGroup>
-          <Button
-            bsSize="large"
-            bsStyle="primary"
-            onClick={this.onSearchClick.bind(this)}>
-                Search
-          </Button>
-          <div className="adv-search-settings-button">
-            <Button
-              bsSize="large"
-              bsStyle="success"
-              onClick={this.props.onShowSettings}>
-                Advanced Options
-            </Button>
-          </div>
-	      </form>
-      );
+        return (
+            <form onSubmit={this.onSearchClick.bind(this)}>
+                <AdvancedSettings />
+                <FormGroup bsSize="large">
+                    <FormControl
+                        type="text"
+                        value={this.state.searchBoxContent}
+                        placeholder="Type here to search"
+                        onChange={this.handleChange.bind(this)}
+                    />
+                    <FormControl.Feedback/>
+                </FormGroup>
+                <Button
+                    type="submit"
+                    bsSize="large"
+                    bsStyle="primary"
+                    onClick={this.onSearchClick.bind(this)}>
+                        Search
+                </Button>
+                <div className="adv-search-settings-button">
+                    <Button
+                        bsSize="large"
+                        bsStyle="success"
+                        onClick={this.props.onShowSettings}>
+                        Advanced Options
+                    </Button>
+                </div>
+            </form>
+        );
     }
 }
 
