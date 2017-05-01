@@ -56,7 +56,6 @@ class LogInV extends React.Component {
     }
 }
 
-                                //type="submit"
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.get('data').get('isLoggedIn', false)

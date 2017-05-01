@@ -1,9 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
-import {insert} from './../../actions/insertdel.js';
+import {countriesList, insert} from './../../actions/insertdel.js';
 
-// TODO: Container (with connect)
 // TODO: Submit
 class InsertPublishersV extends React.Component {
     constructor(props) {
@@ -12,6 +11,7 @@ class InsertPublishersV extends React.Component {
             name: '',
             year_began: '',
             year_ended: '',
+            country_code: '',
             notes: '',
             url: ''
         };
@@ -28,18 +28,31 @@ class InsertPublishersV extends React.Component {
     }
 
     canSubmit() {
-       return this.state.name != '' &&
+        return this.state.name != '' &&
              this.state.year_began != '' &&
              this.state.year_ended != '' &&
              this.validYearsRange() === 'success';
     }
 
+    onSubmit(e) {
+        e.preventDefault();
+        this.props.submit({
+            name: this.state.name,
+            year_began: this.state.year_began,
+            year_ended: this.state.year_ended,
+            country_code: this.state.country_code,
+            notes: this.state.notes,
+            url: this.state.url
+        });
+    }
+
     render() {
         const saveName = e => this.setState({name: e.target.value});
         const saveNotes = e => this.setState({notes: e.target.value});
-        const saveYearBegan = e => this.setState({year_began: e.target.value});
-        const saveYearEnded = e => this.setState({year_ended: e.target.value});
+        const saveYearBegan = e => this.setState({year_began: parseInt(e.target.value)});
+        const saveYearEnded = e => this.setState({year_ended: parseInt(e.target.value)});
         const saveUrl = e => this.setState({url: e.target.value});
+        const saveCountryCode = e => this.setState({country_code: e.target.value});
 
         return (
             <div className="insertpublishers">
@@ -62,7 +75,7 @@ class InsertPublishersV extends React.Component {
                         </Col>
                         <Col sm={4}>
                             <FormControl
-                                type="text"
+                                type="number"
                                 value={this.state.year_began}
                                 onChange={saveYearBegan.bind(this)}/>
                         </Col>
@@ -71,9 +84,22 @@ class InsertPublishersV extends React.Component {
                         </Col>
                         <Col sm={4}>
                             <FormControl
-                                type="text"
+                                type="number"
                                 value={this.state.year_ended}
                                 onChange={saveYearEnded.bind(this)}/>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup>
+                        <Col componentClass={ControlLabel} sm={2}>
+                            Country
+                        </Col>
+                        <Col sm={10}>
+                            <FormControl componentClass="select" onChange={saveCountryCode.bind(this)}>
+                                {this.props.countries.map(c => <option
+                                     key={c['country_code']}
+                                     value={c['country_code']}>
+                                        {c['name']}</option> )}
+                            </FormControl>
                         </Col>
                     </FormGroup>
                     <FormGroup>
@@ -100,8 +126,9 @@ class InsertPublishersV extends React.Component {
                         </Col>
                     </FormGroup>
                     <Button
+                        type="submit"
                         disabled={!this.canSubmit()}
-                        onClick={/*TODO*/ () => console.log('submit')}>
+                        onClick={this.onSubmit.bind(this)}>
                         Add to database
                     </Button>
                 </Form>
@@ -110,4 +137,17 @@ class InsertPublishersV extends React.Component {
     }
 }
 
-export const InsertPublishers = connect()(InsertPublishersV);
+const mapStateToProps = state => {
+    return {
+        countries: state.get('insertdel').get('countries', [])
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    dispatch(countriesList());
+    return {
+        submit: publisher => dispatch(insert('Publisher', publisher))
+    };
+};
+
+export const InsertPublishers = connect(mapStateToProps, mapDispatchToProps)(InsertPublishersV);

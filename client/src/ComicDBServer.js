@@ -31,19 +31,34 @@ function search(params) {
 /**
  * Returns a promise for insertion request
  */
-function insert(dstTable, objToAdd, reqId) {
+function insert(dstTable, objToAdd) {
     let request = new Request(
         config.url + 'insert', {
             headers: headers,
             method: 'POST',
             body: JSON.stringify({
                 dstTable,
-                objToAdd,
-                reqId
+                objToAdd
             })
         }
-    ); // TODO: Error handling
-    return fetch(request).then(resp => console.log(resp))
+    );
+    return fetch(request).then(resp => {
+        if (window.Notification && Notification.permission !== 'denied') {
+            Notification.requestPermission(function(status) {  // status is "granted", if accepted by user
+                new Notification('ComicDB Interface', {
+                    body: 'Insertion in ' + dstTable + ' ' + (resp.ok ? 'succeded' : 'failed'),
+                }); 
+            });
+        }
+        return resp.ok;
+    });
+}
+
+function fetchCountries() {
+    return fetch(config.url + 'countries', {
+        method: 'get',
+        headers: headers
+    }).then(r => r.json());
 }
 
 function login(user, pass) {
@@ -59,5 +74,6 @@ export const Server = {
     fetchTableList,
     insert,
     search,
-    login
+    login,
+    fetchCountries
 };

@@ -21,7 +21,12 @@
 .page-header {
   text-align: center;
 }
+
 .insertpublishers {
+    text-align: right;
+}
+
+.login-button {
     text-align: right;
 }
 

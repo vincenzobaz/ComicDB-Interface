@@ -20,7 +20,8 @@ class InsertPeopleV extends React.Component {
         if (name.length > 3) return 'success';
     }
 
-    onSubmit(name) {
+    onSubmit(e) {
+        e.preventDefault();
         this.props.submit(this.state.name);
         this.setState({name: ''});
     }
@@ -39,6 +40,7 @@ class InsertPeopleV extends React.Component {
                         <FormControl.Feedback/>
                     </FormGroup>
                     <Button
+                        type="submit"
                         disabled={this.isValid() !== 'success'}
                         onClick={this.onSubmit.bind(this)}>
                         Add to database

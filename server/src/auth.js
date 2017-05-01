@@ -1,5 +1,5 @@
 const basicAuth = require('basic-auth');
-const validUser = require('./../../user.js').user;
+const validUser = require('./../../user.json');
 
 const auth = (req, res, next) => {
     const unauthorized = res => {
