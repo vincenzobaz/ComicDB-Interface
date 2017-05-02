@@ -34,6 +34,7 @@ const search = dbconnection => (req, res) => {
         console.log('QUERY: ' + query);
 
         dbconnection.query(query, (dberr, dbres, fields) => {
+            console.log('query completed');
             if (dberr) {
                 console.log(JSON.stringify(dberr));
                 res.sendStatus(400);

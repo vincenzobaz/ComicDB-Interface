@@ -21,8 +21,8 @@ const InsertDeleteV = ({activePanel}) => {
 const chooseMask = {
     'Publishers': <InsertPublishers/>,
     'People': <InsertPeople/>,
-    'Stories': <InsertStories/>,
-    'Issues': <InsertIssues/>
+    //'Stories': <InsertStories/>,
+    //'Issues': <InsertIssues/>
 };
 
 const mapStateToProps = (state) => {

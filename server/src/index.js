@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 // Variable to test table listing, only as long as databse interaction
 // is not set up
-const tables_names_SAMPLE = ['Publishers', 'Stories', 'Brand Groups', 'People', 'Issues', 'Countries', 'Languages', 'Indicia Publishers', 'Series'];
+const tables_names_SAMPLE = ['People', 'Publishers', 'Stories', 'Brand Groups', 'Issues', 'Countries', 'Languages', 'Indicia Publishers', 'Series'];
 
 // Static file serving
 app.use(express.static('./server/static/'));

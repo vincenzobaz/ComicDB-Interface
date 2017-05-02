@@ -26,7 +26,7 @@ export const SearchResults = ({results}) => {
             <Well>
                 <h2>Results</h2>
                 {results.filter(t => t.data.length != 0).map(t =>
-                                <Panel key={t.tableName} header={t.tableName} bsStyle="warning">
+                                <Panel key={t.tableName} header={t.tableName} bsStyle="info">
                                     <ResultTable fieldNames={t.fieldNames} data={t.data}/>
                                 </Panel>)}
             </Well>
