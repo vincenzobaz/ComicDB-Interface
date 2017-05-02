@@ -8,9 +8,9 @@ export class ReactSpinner extends React.Component {
 
     componentDidMount() {
         this.spinner = new Spinner(this.props.config);
-            if (!this.props.stopped) {
-                this.spinner.spin(this.refs.container);
-            }
+        if (!this.props.stopped) {
+            this.spinner.spin(this.refs.container);
+        }
     }
 
     componentWillReceiveProps(newProps) {

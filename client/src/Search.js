@@ -14,7 +14,7 @@ const SearchV = ({searchResults, searchPending}) => {
             <Grid>
                 <Row>
                     {searchPending && <ReactSpinner />}
-                    {(!searchPending || searchResults) && <Well><SearchResults results={searchResults}/></Well>}
+                    {searchResults && <Well><SearchResults results={searchResults}/></Well>}
                 </Row>
             </Grid>
         </div>
