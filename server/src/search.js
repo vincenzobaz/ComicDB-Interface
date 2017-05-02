@@ -1,9 +1,46 @@
 
-let queries = t =>  ['SELECT * FROM `Issues` WHERE `Issues`.`title` LIKE "%' + t + '%" OR `Issues`.`notes` LIKE "%' + t + '%"', 'SELECT * FROM `Countries` WHERE `Countries`.`name` LIKE "%' + t + '%s"'];
+let queries = {
+    'Issues' : function(t) {return 'SELECT * FROM `Issues` WHERE `Issues`.`title` LIKE "%' + t + '%" OR `Issues`.`notes` LIKE "%' + t + '%"';},
+    'Countries': function(t) {return 'SELECT * FROM `Countries` WHERE `Countries`.`name` LIKE "%' + t + '%"';}
+};
+
+const prepareMultipleResults = (data, fields) => {
+    let result = {};
+    const tables = fields.map(q => q[0]['table'] );
+    const fieldNames = fields.map(q => q.map(f => f['name']));
+
+    for (let table = 0; table < tables.length; ++table) {
+        result[tables[table]] = {
+            fieldNames : fieldNames[table],
+            data : data[table].map(e => fieldNames[table].map(fName => e[fName])),
+        };
+    }
+    return JSON.stringify(result);
+
+};
+
+const prepareSimpleResult = (data, fields) => {
+    const tableName = fields[0]['table'];
+    const fieldNames = fields.map(f => f['name']);
+    let result = {};
+
+    result[tableName] = {
+        fieldNames: fieldNames,
+        data: data.map(e => fieldNames.map(fName => e[fName]))
+    };
+
+    return result;
+};
+
+const prepareJson = (data, fields, flat) => {
+    if (data.length == 0) return data;
+    return flat ? prepareSimpleResult(data, fields) : prepareMultipleResults(data, fields);
+};
 
 const search = dbconnection => (req, res) => {
-        let query = queries(req.body.string).reduce((a, b) => a +'; ' + b);
-        //let query = 'SELECT * FROM `Countries` WHERE `Countries`.`name` LIKE "%France%s"';
+        let query = req.body.enabledTables.filter(t => queries.hasOwnProperty(t))
+                                          .map(t => queries[t](req.body.string))
+                                          .reduce((a, b) => a +'; ' + b);
         console.log('QUERY: ' + query);
 
         dbconnection.query(query, (dberr, dbres, fields) => {
@@ -11,19 +48,7 @@ const search = dbconnection => (req, res) => {
                 console.log(JSON.stringify(dberr));
                 res.sendStatus(400);
             }
-            let result = {};
-            let tables = fields.map(q => q[0]['table'] );
-            let fieldNames = fields.map(q => q.map(f => f['name']));
-
-            for (let table = 0; table < tables.length; ++table) {
-                result[tables[table]] = {
-                    fieldNames : fieldNames[table],
-                    data : dbres[table].map(e => fieldNames[table].map(fName => e[fName])),
-                };
-            }
-
-            console.log(JSON.stringify(result));
-            res.send(JSON.stringify(result));
+            res.send(prepareJson(dbres, fields, req.body.enabledTables.length == 1));
         });
 };
 
