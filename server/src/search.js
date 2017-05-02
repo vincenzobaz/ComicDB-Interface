@@ -1,17 +1,11 @@
-
-let queries = {
-    'Issues' : function(t) {return 'SELECT * FROM `Issues` WHERE `Issues`.`title` LIKE "%' + t + '%" OR `Issues`.`notes` LIKE "%' + t + '%"';},
-    'Countries': function(t) {return 'SELECT * FROM `Countries` WHERE `Countries`.`name` LIKE "%' + t + '%"';}
-};
+const queries = require('./query.js');
 
 const prepareMultipleResults = (data, fields) => {
-    //let result = {};
-    const tables = fields.map(q => q[0]['table'] );
     const fieldNames = fields.map(q => q.map(f => f['name']));
 
-    return tables.map((t, idx) => {
+    return fields.map((t, idx) => {
         return {
-            tableName: t,
+            tableName: t[0]['orgTable'],
             fieldNames: fieldNames[idx],
             data: data[idx].map(e => fieldNames[idx].map(fName => e[fName])),
         };
@@ -19,11 +13,10 @@ const prepareMultipleResults = (data, fields) => {
 };
 
 const prepareSimpleResult = (data, fields) => {
-    const tableName = fields[0]['table'];
     const fieldNames = fields.map(f => f['name']);
     
     return [{
-        tableName: tableName,
+        tableName: fields[0]['orgTable'],
         fieldNames: fieldNames,
         data: data.map(e => fieldNames.map(fName => e[fName]))
     }];
