@@ -27,7 +27,7 @@ export const SearchResults = ({results}) => {
         }
     }
     let i = 0;
-    return (<div> {tables.map(t =>
+    return (<div> <h2>Results</h2> {tables.map(t =>
                                 <Panel key={i++} header={t} bsStyle="warning">
                                     <ResultTable fieldNames={results[t].fieldNames} data={results[t].data}/>
                                 </Panel>)}

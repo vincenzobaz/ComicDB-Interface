@@ -5,15 +5,16 @@ import {SearchResults} from './components/search/SearchResults.js';
 import {Server} from './ComicDBServer.js';
 import {connect} from 'react-redux';
 import {tablelist} from './actions/index.js';
+import {ReactSpinner} from './components/Spinner.js';
 
-const SearchV = ({searchResults}) => {
+const SearchV = ({searchResults, searchPending}) => {
     return(
         <div className="search">
             <SearchInput />
             <Grid>
                 <Row>
-                    {searchResults && <h2> Results </h2>}
-                    {searchResults && <Well><SearchResults results={searchResults}/></Well>}
+                    {searchPending && <ReactSpinner />}
+                    {(!searchPending || searchResults) && <Well><SearchResults results={searchResults}/></Well>}
                 </Row>
             </Grid>
         </div>
@@ -28,6 +29,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
     return {
         searchResults: state.get('search').get('searchResults', false),
+        searchPending: state.get('search').get('pending', false)
     };
 };
 
