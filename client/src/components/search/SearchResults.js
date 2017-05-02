@@ -20,16 +20,13 @@ const ResultTable = ({fieldNames, data}) => {
 };
 
 export const SearchResults = ({results}) => {
-    const tables = [];
-    for (let k in results) {
-        if (results.hasOwnProperty(k) && results[k].data.length != 0) {
-            tables.push(k);
-        }
-    }
-    let i = 0;
-    return (<div> <h2>Results</h2> {tables.map(t =>
-                                <Panel key={i++} header={t} bsStyle="warning">
-                                    <ResultTable fieldNames={results[t].fieldNames} data={results[t].data}/>
-                                </Panel>)}
-                                </div>);
+    return (
+        <div>
+            <h2>Results</h2>
+             {results.map(t =>
+                            <Panel key={i++} header={t.tableName} bsStyle="warning">
+                                <ResultTable fieldNames={t.fieldNames} data={t.data}/>
+                            </Panel>)}
+        </div>
+    );
 };

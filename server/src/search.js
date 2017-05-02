@@ -5,31 +5,28 @@ let queries = {
 };
 
 const prepareMultipleResults = (data, fields) => {
-    let result = {};
+    //let result = {};
     const tables = fields.map(q => q[0]['table'] );
     const fieldNames = fields.map(q => q.map(f => f['name']));
 
-    for (let table = 0; table < tables.length; ++table) {
-        result[tables[table]] = {
-            fieldNames : fieldNames[table],
-            data : data[table].map(e => fieldNames[table].map(fName => e[fName])),
+    return tables.map((t, idx) => {
+        return {
+            tableName: t,
+            fieldNames: fieldNames[idx],
+            data: data[idx].map(e => fieldNames[idx].map(fName => e[fName])),
         };
-    }
-    return JSON.stringify(result);
-
+    });
 };
 
 const prepareSimpleResult = (data, fields) => {
     const tableName = fields[0]['table'];
     const fieldNames = fields.map(f => f['name']);
-    let result = {};
-
-    result[tableName] = {
+    
+    return [{
+        tableName: tableName,
         fieldNames: fieldNames,
         data: data.map(e => fieldNames.map(fName => e[fName]))
-    };
-
-    return result;
+    }];
 };
 
 const prepareJson = (data, fields, flat) => {
