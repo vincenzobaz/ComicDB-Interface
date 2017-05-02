@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Row, Well} from 'react-bootstrap';
+import {Grid, Row} from 'react-bootstrap';
 import {SearchInput} from './components/search/SearchInput.js';
 import {SearchResults} from './components/search/SearchResults.js';
 import {Server} from './ComicDBServer.js';
@@ -14,7 +14,7 @@ const SearchV = ({searchResults, searchPending}) => {
             <Grid>
                 <Row>
                     {searchPending && <ReactSpinner />}
-                    {searchResults && <Well><SearchResults results={searchResults}/></Well>}
+                    {searchResults && <SearchResults results={searchResults}/>}
                 </Row>
             </Grid>
         </div>

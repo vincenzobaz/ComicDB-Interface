@@ -1,5 +1,5 @@
 import React from 'react';
-import {Panel, Table} from 'react-bootstrap';
+import {Panel, Table, Well} from 'react-bootstrap';
 
 const prettyTableName = name => name.charAt(0).toUpperCase() + name.slice(1).replace('_', ' ');
 
@@ -22,12 +22,14 @@ const ResultTable = ({fieldNames, data}) => {
 
 export const SearchResults = ({results}) => {
     return (
-        <div>
-            <h2>Results</h2>
-             {results.filter(t => t.data.length != 0).map(t =>
-                            <Panel key={t.tableName} header={t.tableName} bsStyle="warning">
-                                <ResultTable fieldNames={t.fieldNames} data={t.data}/>
-                            </Panel>)}
+        <div className="searchresults">
+            <Well>
+                <h2>Results</h2>
+                {results.filter(t => t.data.length != 0).map(t =>
+                                <Panel key={t.tableName} header={t.tableName} bsStyle="warning">
+                                    <ResultTable fieldNames={t.fieldNames} data={t.data}/>
+                                </Panel>)}
+            </Well>
         </div>
     );
 };
