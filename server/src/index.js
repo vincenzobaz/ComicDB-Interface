@@ -5,6 +5,7 @@ const connectionParameters = require('./../../conpars.json');
 const authentication = require('./auth.js').auth;
 const insert = require('./insert.js');
 const search = require('./search.js');
+const predef = require('./predef_query.js')
 
 const connection = mysql.createConnection(connectionParameters);
 
@@ -37,6 +38,10 @@ app.get('/countries', authentication, (req, res) => {
 app.post('/insert', authentication, insert(connection));
 
 app.post('/search', authentication, search(connection));
+
+app.get('/predef', authentication, predef.list_queries);
+
+app.post('/predef', authentication, predef.perform_query(connection));
 
 // Start server
 app.listen(3000, () => {
