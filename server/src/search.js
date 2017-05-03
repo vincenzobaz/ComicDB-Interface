@@ -23,14 +23,14 @@ const prepareSimpleResult = (data, fields) => {
 };
 
 const prepareJson = (data, fields, flat) => {
-    if (data.length == 0) return data;
+    if (!data || data.length == 0) return data;
     return flat ? prepareSimpleResult(data, fields) : prepareMultipleResults(data, fields);
 };
 
 const search = dbconnection => (req, res) => {
         let query = req.body.enabledTables.filter(t => queries.hasOwnProperty(t))
                                           .map(t => queries[t](req.body.string))
-                                          .reduce((a, b) => a +'; ' + b);
+                                          .reduce((a, b) => a +'LIMIT 25; ' + b);
         console.log('QUERY: ' + query);
 
         dbconnection.query(query, (dberr, dbres, fields) => {
@@ -38,6 +38,7 @@ const search = dbconnection => (req, res) => {
             if (dberr) {
                 console.log(JSON.stringify(dberr));
                 res.sendStatus(400);
+                return;
             }
             res.send(prepareJson(dbres, fields, req.body.enabledTables.length == 1));
         });

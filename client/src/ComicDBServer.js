@@ -4,7 +4,7 @@
  */
 
 const config = {
-    url: 'http://localhost:3000/'
+    url: server_url + '/'
 };
 
 

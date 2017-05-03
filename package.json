@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --use_strict server/src/index.js",
-    "bundle": "webpack"
+    "bundle:dev": "webpack --env=dev --progress --profile --colors",
+    "bundle:prod": "webpack --env=prod --progress --profile"
   },
   "author": "vincenzobaz",
   "license": "ISC",

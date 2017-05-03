@@ -11,8 +11,8 @@ const InsertDeleteV = ({activePanel}) => {
     return(
         <div className='insdel'>
             <Grid>
-                <Col md={2}><TablePicker/></Col>
-                <Col md={7}> {chooseMask[activePanel]} </Col>
+                <Col md={3}><TablePicker/></Col>
+                <Col md={9}> {chooseMask[activePanel]} </Col>
             </Grid>
         </div>
     );
