@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const server = 'http://207.154.196.104/';
+const server = 'http://207.154.196.104';
 
 module.exports = {
   // entry file for bundling
