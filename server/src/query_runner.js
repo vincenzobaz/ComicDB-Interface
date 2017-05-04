@@ -26,17 +26,20 @@ const prepareJson = (data, fields, flat) => {
 };
 
 
-const run = (dbconnection, query, creq, cres) => {
+const run = (dbconnection, query, creq, cres, info = null) => {
     console.log('QUERY: ' + query);
 
     dbconnection.query(query, (dberr, dbres, fields) => {
         console.log('query completed');
         if (dberr) {
-            console.log(JSON.stringify(fields));
+            console.log(JSON.stringify(dberr));
             cres.sendStatus(400);
             return;
         }
-        cres.send(prepareJson(dbres, fields, query.indexOf(';') == -1));
+        cres.send({
+            info: info,
+            results: prepareJson(dbres, fields, query.indexOf(';') == -1)
+        });
     });
 };
 

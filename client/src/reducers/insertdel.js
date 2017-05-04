@@ -1,6 +1,6 @@
 import {List} from 'immutable';
 
-export const insertReducer = (state, action) => {;
+export const insertReducer = (state, action) => {
 	let i = state.get('insertdel', new Map());
 	switch (action.type) {
 		case 'INSERT_ACTIVATE_PANEL' :
@@ -16,7 +16,7 @@ export const insertReducer = (state, action) => {;
 			const countryCmp = (a, b) => {
 				let al = a.name.toLowerCase();
 				let bl = b.name.toLowerCase();
-				if (al < bl) return -1
+				if (al < bl) return -1;
 				if (al > bl) return 1;
 				return 0;
 			};
@@ -24,7 +24,7 @@ export const insertReducer = (state, action) => {;
 			break;
 		default:
 			return state;
-	}
+	};
 	return state.set('insertdel', i);
-}
+};
 

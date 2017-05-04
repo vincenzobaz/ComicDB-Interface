@@ -29,7 +29,7 @@ function search(params) {
         method: 'post',
         headers: headers,
         body: JSON.stringify(params)
-    }).then(r => r.json());
+    }).then(r => r.json()).then(r => r.results());
 }
 
 /**
@@ -74,10 +74,29 @@ function login(user, pass) {
     }).then(res => res.ok);
 }
 
+function fetchQueryList() {
+    return fetch(config.url + 'predef', {
+        method: 'get',
+        headers: headers
+    }).then(res => res.json());
+}
+
+function predef(i) {
+    return fetch(config.url + 'predef', {
+        method: 'post',
+        headers: headers,
+        body: JSON.stringify({
+            id: i
+        })
+    }).then(r => r.json());
+}
+
 export const Server = {
     fetchTableList,
     insert,
     search,
     login,
-    fetchCountries
+    fetchCountries,
+    fetchQueryList,
+    predef
 };

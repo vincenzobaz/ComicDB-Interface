@@ -1,10 +1,13 @@
 import {searchReducer} from './search.js';
 import {insertReducer} from './insertdel.js';
+import {predefReducer} from './predefqueries.js';
+
 import {List, Map, OrderedMap, Set} from 'immutable';
 
 const freshState = () => new Map().set('data', new Map())
                   .set('search', new Map())
-                  .set('insertdel', new Map().set('pending', new Set()));
+                  .set('insertdel', new Map().set('pending', new Set())
+                  .set('predef', new Map()));
 
 export const reducer = (state = freshState(), action) => {
     let d = state.get('data', new Map());
@@ -26,9 +29,10 @@ export const reducer = (state = freshState(), action) => {
             break;
         default:
             let tmp = searchReducer(state, action);
-            if (tmp == state) return insertReducer(state, action);
+            if (tmp == state) tmp = insertReducer(state, action);
+            if (tmp == state) return predefReducer(state, action);
             else return tmp;
-    }
+    };
     return state.set('data', d);
 };
 

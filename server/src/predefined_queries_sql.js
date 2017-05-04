@@ -72,28 +72,28 @@ WHERE S.story_id IN (SELECT S2.story_id
 
 const queries = [
     {
-        description: 'brand group names with the highest number of Belgian indicia publishers.',
+        description: 'Brand group names with the highest number of Belgian indicia publishers.',
         code: codes[0]
     }, {
-        description: 'ids and names of publishers of Danish book series',
+        description: 'IDs and names of publishers of Danish book series',
         code: codes[1]
     }, {
-        description: 'names of all Swiss series that have been published in magazines',
+        description: 'Names of all Swiss series that have been published in magazines',
         code: codes[2]
     }, {
-        description: 'number of issues published each year starting from 1990',
+        description: 'Number of issues published each year starting from 1990',
         code: codes[3]
     }, {
-        description: 'number of series for each indicia publisher whose name resembles ‘DC comics’',
+        description: 'Number of series for each indicia publisher whose name resembles ‘DC comics’',
         code: codes[4]
     }, {
-        description: 'titles of the 10 most reprinted stories',
+        description: 'Titles of the 10 most reprinted stories',
         code: codes[5]
     }, {
-        description: 'artists that have scripted, drawn, and colored at least one of the stories they were involved in',
+        description: 'Artists that have scripted, drawn, and colored at least one of the stories they were involved in',
         code: codes[6]
     }, {
-        description: 'all non-reprinted stories involving Batman as a non-featured character',
+        description: 'All non-reprinted stories involving Batman as a non-featured character',
         code: codes[7]
     }
 ];
