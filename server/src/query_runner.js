@@ -31,7 +31,7 @@ const run = (dbconnection, query, creq, cres, info = null) => {
 
     dbconnection.query(query, (dberr, dbres, fields) => {
         console.log('query completed');
-        if (dberr) {
+        if (dberr != null) {
             console.log(JSON.stringify(dberr));
             cres.sendStatus(400);
             return;
