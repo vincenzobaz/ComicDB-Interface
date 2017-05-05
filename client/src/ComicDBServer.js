@@ -29,7 +29,7 @@ function search(params) {
         method: 'post',
         headers: headers,
         body: JSON.stringify(params)
-    }).then(r => r.json()).then(r => r.results());
+    }).then(r => r.json()).then(r => r.results);
 }
 
 /**
