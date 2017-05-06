@@ -5,7 +5,7 @@ const connectionParameters = require('./../../conpars.json');
 const authentication = require('./auth.js').auth;
 const insert = require('./insert.js');
 const search = require('./search.js');
-const predef = require('./predef_query.js')
+const predef = require('./predef_query.js');
 
 const connection = mysql.createConnection(connectionParameters);
 
@@ -13,6 +13,7 @@ connection.connect();
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 // Variable to test table listing, only as long as databse interaction
 // is not set up
