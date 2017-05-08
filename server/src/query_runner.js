@@ -1,3 +1,5 @@
+const util = require('util');
+
 const prepareMultipleResults = (data, fields) => {
     const fieldNames = fields.map(q => q.map(f => f['name']));
 
@@ -30,12 +32,13 @@ const run = (dbconnection, query, creq, cres, info = null) => {
     console.log('QUERY: ' + query);
 
     dbconnection.query(query, (dberr, dbres, fields) => {
-        console.log('query completed');
         if (dberr != null) {
-            console.log(JSON.stringify(dberr));
+            console.log('MYSQL ERROR');
+            console.log(util.inspect(dberr));
             cres.sendStatus(400);
             return;
         }
+        console.log('query completed');
         cres.send({
             info: info,
             results: prepareJson(dbres, fields, query.indexOf(';') == -1)

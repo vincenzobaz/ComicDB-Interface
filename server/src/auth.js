@@ -16,7 +16,7 @@ const auth = (req, res, next) => {
     if (user.name === validUser.name && user.pass === validUser.password) {
         return next();
     } else {
-        return unauthorized(res);
+        unauthorized(res);
     }
 };
 

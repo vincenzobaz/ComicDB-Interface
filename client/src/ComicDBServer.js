@@ -17,7 +17,10 @@ const headers = new Headers({
  * database
  */
 function fetchTableList() {
-    return fetch(config.url + 'tables_list', {method: 'get', headers: headers}).then(r => r.json());
+    return fetch(config.url + 'tables_list', {
+        method: 'get',
+        headers: headers
+    }).then(r => r.json());
 }
 
 /**
@@ -29,7 +32,8 @@ function search(params) {
         method: 'post',
         headers: headers,
         body: JSON.stringify(params)
-    }).then(r => r.json()).then(r => r.results);
+    }).then(r => r.json())
+      .then(r => r.ok ? r.results : {}); // TODO: SHOW ERR
 }
 
 /**
@@ -39,7 +43,7 @@ function insert(dstTable, objToAdd) {
     let request = new Request(
         config.url + 'insert', {
             headers: headers,
-            method: 'POST',
+            method: 'post',
             body: JSON.stringify({
                 dstTable,
                 objToAdd

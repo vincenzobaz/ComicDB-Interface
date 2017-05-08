@@ -6,6 +6,7 @@ const authentication = require('./auth.js').auth;
 const insert = require('./insert.js');
 const search = require('./search.js');
 const predef = require('./predef_query.js');
+const util = require('util');
 
 const connection = mysql.createConnection(connectionParameters);
 
@@ -14,6 +15,17 @@ connection.connect();
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+const debugError = (err, req, res, next) => {
+  if (err instanceof SyntaxError) {
+    console.log('HEEEEERRE ERROR  ');
+    console.log('ERR:  \n' + util.inspect(err));
+    console.log('REQ:   \n' + util.inspect(req));
+    next(err);
+  }
+};
+
+app.use(debugError);
 
 // Variable to test table listing, only as long as databse interaction
 // is not set up
