@@ -23,7 +23,8 @@ module.exports = {
           comments: false
       }),
       new webpack.DefinePlugin({
-      'server_url' : JSON.stringify(server)
+        'server_url' : JSON.stringify(server),
+        'NODE_ENV' : JSON.stringify('production')
       })
   ],
 
