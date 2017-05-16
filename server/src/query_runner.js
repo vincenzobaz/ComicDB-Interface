@@ -14,11 +14,12 @@ const prepareMultipleResults = (data, fields) => {
 
 const prepareSimpleResult = (data, fields) => {
     const fieldNames = fields.map(f => f['name']);
+    const result = data.map(e => fieldNames.map(fName => e[fName]));
 
     return [{
         tableName: fields[0]['orgTable'],
         fieldNames: fieldNames,
-        data: data.map(e => fieldNames.map(fName => e[fName]))
+        data: fieldNames.length > 1 ? result : result.filter(el => el != null  && el != '')
     }];
 };
 
