@@ -44,16 +44,32 @@ class InsertPublishersV extends React.Component {
             notes: this.state.notes,
             url: this.state.url
         });
+        this.resetState();
+    }
+
+    resetState() {
+        this.setState({
+            name: '',
+            year_began: '',
+            year_ended: '',
+            country_code: '',
+            notes: '',
+            url: ''
+        });
     }
 
     render() {
         const saveName = e => this.setState({name: e.target.value});
         const saveNotes = e => this.setState({notes: e.target.value});
-        const saveYearBegan = e => this.setState({year_began: parseInt(e.target.value)});
-        const saveYearEnded = e => this.setState({year_ended: parseInt(e.target.value)});
+        const saveYearBegan = e => this.setState({year_began: e.target.value});
+        const saveYearEnded = e => this.setState({year_ended: e.target.value});
         const saveUrl = e => this.setState({url: e.target.value});
         const saveCountryCode = e => this.setState({country_code: e.target.value});
 
+        const years = [];
+        for (let i = 1700; i < 2018; ++i) {
+            years.push(i);
+        }
         return (
             <div className="insertpublishers">
                 <h2> Insert a Publisher </h2>
@@ -74,19 +90,17 @@ class InsertPublishersV extends React.Component {
                             Active from
                         </Col>
                         <Col sm={4}>
-                            <FormControl
-                                type="number"
-                                value={this.state.year_began}
-                                onChange={saveYearBegan.bind(this)}/>
+                            <FormControl componentClass="select" onChange={saveYearBegan.bind(this)}>
+                                {years.map(y => <option key={y} value={y}> {y}</ option>)}
+                            </FormControl>
                         </Col>
                         <Col componentClass={ControlLabel} sm={2}>
                             To
                         </Col>
                         <Col sm={4}>
-                            <FormControl
-                                type="number"
-                                value={this.state.year_ended}
-                                onChange={saveYearEnded.bind(this)}/>
+                            <FormControl componentClass="select" onChange={saveYearEnded.bind(this)}>
+                                {years.map(y => <option key={y} value={y}> {y}</ option>)}
+                            </FormControl>
                         </Col>
                     </FormGroup>
                     <FormGroup>
