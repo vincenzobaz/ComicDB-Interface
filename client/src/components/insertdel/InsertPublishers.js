@@ -60,8 +60,8 @@ class InsertPublishersV extends React.Component {
     render() {
         const saveName = e => this.setState({name: e.target.value});
         const saveNotes = e => this.setState({notes: e.target.value});
-        const saveYearBegan = e => this.setState({year_began: e.target.value});
-        const saveYearEnded = e => this.setState({year_ended: e.target.value});
+        const saveYearBegan = e => this.setState({year_began: parseInt(e.target.value)});
+        const saveYearEnded = e => this.setState({year_ended: parseInt(e.target.value)});
         const saveUrl = e => this.setState({url: e.target.value});
         const saveCountryCode = e => this.setState({country_code: e.target.value});
 
