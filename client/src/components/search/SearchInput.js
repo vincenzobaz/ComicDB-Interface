@@ -15,7 +15,8 @@ class SearchInputV extends React.Component {
         e.preventDefault();
         this.props.onSearchRun({
             string: this.state.searchBoxContent,
-            enabledTables: this.props.enabledTables.filter(v => v).keySeq().toArray()
+            enabledTables: this.props.enabledTables.filter(v => v).keySeq().toArray(),
+            max_results: this.props.maxres
         });
     }
 
@@ -66,7 +67,8 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
     return {
         enabledTables: state.get('search').get('enabledTables'),
-        showSettings: state.get('search').get('showAdvancedSettings', false)
+        showSettings: state.get('search').get('showAdvancedSettings', false),
+        maxres: state.get('search').get('numresults', 25)
     };
 };
 

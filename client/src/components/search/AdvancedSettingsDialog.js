@@ -1,10 +1,12 @@
 import React from 'react';
-import {Button, Checkbox, Modal} from 'react-bootstrap';
+import {Button, Checkbox, ControlLabel, Col, Form, FormControl, FormGroup, Modal} from 'react-bootstrap';
 import {Map, OrderedMap} from 'immutable';
-import {searchToggleTable, toggleSearchSettings} from '../../actions/search.js';
+import {searchToggleTable, toggleSearchSettings, maxResults} from '../../actions/search.js';
 import {connect} from 'react-redux';
 
-const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose}) => {
+const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose, setMaxResults}) => {
+    const setMaxRes = e => setMaxResults(e.target.value);
+    const poss = [25, 50, 75, 100];
     return(
         <Modal show={show}>
             <Modal.Header>
@@ -13,12 +15,24 @@ const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose}) =>
             <Modal.Body>
                 <h4>Tables to search:</h4>
                     {enabledTables.map((enabled, table) =>
-			    <Checkbox
-			    	key={table}
-			    	checked={enabled}
-			        onChange={toggleTable.bind(null, table)}>
-				    {table}
-			    </Checkbox>)}
+                        <Checkbox
+                            key={table}
+                            checked={enabled}
+                            onChange={toggleTable.bind(null, table)}>
+                                {table}
+                        </Checkbox>)}
+                <Form horizontal>
+                    <FormGroup>
+                        <Col componentClass={ControlLabel} sm={8}>
+                            Maximal number of results
+                        </Col>
+                        <Col sm={4}>
+                            <FormControl componentClass="select" onChange={setMaxRes}>
+                                {poss.map((e, idx) => <option key={idx} value={e}> {e} </option>)}
+                            </FormControl>
+                        </Col>
+                    </FormGroup>
+                </Form>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={onClose}>
@@ -39,7 +53,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         toggleTable: table => dispatch(searchToggleTable(table)),
-        onClose: () => dispatch(toggleSearchSettings())
+        onClose: () => dispatch(toggleSearchSettings()),
+        setMaxResults: n => dispatch(maxResults(n))
     };
 };
 

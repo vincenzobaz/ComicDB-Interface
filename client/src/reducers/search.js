@@ -15,8 +15,11 @@ export const searchReducer = (state, action) => {
 			s = s.set('searchResults', action.data);
 			s = s.set('pending', false);
 			break;
-        case 'SEARCH_RESULT_REQUEST':
+		case 'SEARCH_RESULT_REQUEST':
 			s = s.set('pending', true);
+			break;
+		case 'SET_MAX_RESULTS':
+			s = s.set('numresults', parseInt(action.n));
 			break;
 		default:
 			return state;

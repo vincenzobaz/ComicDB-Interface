@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
 import {countriesList, insert} from './../../actions/insertdel.js';
 
-// TODO: Submit
 class InsertPublishersV extends React.Component {
     constructor(props) {
         super(props);

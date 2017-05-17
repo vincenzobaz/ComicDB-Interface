@@ -27,6 +27,13 @@ export const searchRequest = (string) => {
 	};
 };
 
+export const maxResults = n => {
+	return {
+		type: 'SET_MAX_RESULTS',
+		n: n
+	};
+};
+
 export const search = args => dispatch => {
 	dispatch(searchRequest(args.string));
 	return Server.search(args).then(r => dispatch(searchResultReceived(r)));
