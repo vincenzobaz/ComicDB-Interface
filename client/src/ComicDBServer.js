@@ -32,8 +32,7 @@ function search(params) {
         method: 'post',
         headers: headers,
         body: JSON.stringify(params)
-    }).then(r => r.json())
-      .then(r => r.ok ? r.results : {}); // TODO: SHOW ERR
+    }).then(r => r.json()).then(r => r.results);
 }
 
 /**
