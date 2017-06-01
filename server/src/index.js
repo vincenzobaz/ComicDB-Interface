@@ -7,6 +7,7 @@ const insert = require('./insert.js');
 const search = require('./search.js');
 const predef = require('./predef_query.js');
 const util = require('util');
+const deleteEntry = require('./delete.js');
 
 const connection = mysql.createConnection(connectionParameters);
 
@@ -55,6 +56,8 @@ app.post('/search', authentication, search(connection));
 app.get('/predef', authentication, predef.list_queries);
 
 app.post('/predef', authentication, predef.perform_query(connection));
+
+app.post('/delete', authentication, (req, res) => deleteEntry(connection, req.body.tableName, req.body.id));
 
 // Start server
 app.listen(3000, () => {

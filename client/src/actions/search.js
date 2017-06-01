@@ -39,3 +39,6 @@ export const search = args => dispatch => {
 	return Server.search(args).then(r => dispatch(searchResultReceived(r)));
 };
 
+export const deleteEntry = (tableName, id) => dispatch => {
+	return Server.deleteEntry(tableName, id);
+};

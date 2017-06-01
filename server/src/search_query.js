@@ -1,5 +1,5 @@
 const issues = t => `\
-SELECT I.number, I.title, I.publication_date, I.on_sale_date,
+SELECT I.issue_id AS id, I.number, I.title, I.publication_date, I.on_sale_date,
        I.price, I.page_count, I.indicia_frequency, I.notes,
        I.rating, S.name AS Story_title, P.name AS Publisher_name,
        I.isbn, I.barcode
@@ -7,37 +7,38 @@ FROM ((Issues I LEFT JOIN Series S ON I.serie_id = S.serie_id) LEFT JOIN Indicia
 WHERE I.title LIKE "%${t}%" OR I.notes LIKE "%${t}%"`;
 
 const countries = t => `\
-SELECT C.name
+SELECT C.country_code AS id, C.name
 FROM Countries C
 WHERE C.name LIKE "%${t}%"`;
 
 const brandgroups = t => `\
-SELECT B.name, B.notes, B.year_began, B.year_ended, P.name AS publisher, B.url 
+SELECT B.brand_group_id AS id, B.name, B.notes, B.year_began, B.year_ended, P.name AS publisher, B.url 
 FROM Brand_Groups B LEFT JOIN Publishers P ON B.publisher_id = P.publisher_id
 WHERE B.name LIKE "%${t}%" OR B.notes LIKE "%${t}%"`;
 
 const people = t => `\
-SELECT P.name
+SELECT P.people_id as id, P.name
 FROM People P
 WHERE P.name LIKE "%${t}%"`;
 
 const languages = t => `\
-SELECT L.name
+SELECT L.language_code as id, L.name
 FROM Languages L 
 WHERE L.name LIKE "%${t}%"`;
 
 const indicia_publishers = t => `\
-SELECT I.name, I.notes, I.year_began, I.year_ended, I.url, I.is_surrogate, C.name AS country, P.name AS Publisher
+SELECT I.indicia_publisher_id AS id, I.name, I.notes, I.year_began, I.year_ended, I.url, I.is_surrogate, C.name AS country, P.name AS Publisher
 FROM (Indicia_Publishers I LEFT JOIN Publishers P ON I.publisher_id = P.publisher_id) LEFT JOIN Countries C ON I.country_code = P.country_code
 WHERE I.name LIKE "%${t}%" OR I.notes LIKE "%${t}%"`;
 
 const publishers = t => `\
-SELECT P.name, P.year_began, P.year_ended, P.url, P.notes, C.name AS Country
+SELECT P.publisher_id AS id, P.name, P.year_began, P.year_ended, P.url, P.notes, C.name AS Country
 FROM Publishers P LEFT JOIN Countries C ON P.country_code = C.country_code
 WHERE P.name LIKE "%${t}%" OR P.notes LIKE "%${t}%"`;
 
 const series = t => `\
 SELECT
+    S.serie_id AS id,
     S.name,
     S.binding,
     S.color,
