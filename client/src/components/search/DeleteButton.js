@@ -16,7 +16,7 @@ class DeleteButtonV extends React.Component {
 
     render() {
         if (!this.state.deleted) {
-            return (<img src="http://localhost:3000/del_ico.png" height={20} width={20}/>);
+            return (<img src={server_url + "/del_ico.png"} height={20} width={20} onClick={this.onDelete.bind(this)}/>);
         } else {
             return (<Button bsStyle="info">Deleted</Button>);
         }
