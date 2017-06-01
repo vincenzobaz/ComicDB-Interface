@@ -94,6 +94,17 @@ function predef(i) {
     }).then(r => r.json());
 }
 
+function deleteEntry(tableName, id) {
+    return fetch(config.url + 'delete', {
+        method: 'post',
+        headers: headers,
+        body: JSON.stringify({
+            tableName,
+            id
+        })
+    });
+}
+
 export const Server = {
     fetchTableList,
     insert,
@@ -101,5 +112,6 @@ export const Server = {
     login,
     fetchCountries,
     fetchQueryList,
-    predef
+    predef,
+    deleteEntry
 };
