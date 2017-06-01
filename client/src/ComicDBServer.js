@@ -49,16 +49,7 @@ function insert(dstTable, objToAdd) {
             })
         }
     );
-    return fetch(request).then(resp => {
-        if (window.Notification && Notification.permission !== 'denied') {
-            Notification.requestPermission(function(status) {  // status is "granted", if accepted by user
-                new Notification('ComicDB Interface', {
-                    body: 'Insertion in ' + dstTable + ' ' + (resp.ok ? 'succeded' : 'failed'),
-                }); 
-            });
-        }
-        return resp.ok;
-    });
+    return fetch(request);
 }
 
 function fetchCountries() {

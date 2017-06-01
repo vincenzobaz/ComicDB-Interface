@@ -44,3 +44,8 @@ export const insert = (dstTable, objToAdd) => dispatch => {
           .then(success => dispatch(insertResponse(success)));
 };
 
+export const hideNotif = () => {
+    return {
+        type: 'HIDE_NOTIF'
+    };
+};

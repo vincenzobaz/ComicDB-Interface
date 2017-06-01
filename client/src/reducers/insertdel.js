@@ -7,10 +7,11 @@ export const insertReducer = (state, action) => {
 			i = i.set('activePanel', action.panel);
 			break;
 		case 'REQUEST_INSERTION':
-			i = i.set('pending', i.get('pending').add(action.reqId));
+			i = i.set('pending', true);
 			break;
 		case 'DB_INSERT_RESPONSE':
-			i = i.set('pending', i.get('pending').delete(action.reqId));
+			i = i.set('pending', false);
+			i = i.set('insertWorked', action.issue);
 			break;
 		case 'COUNTRIES_RESPONSE':
 			const countryCmp = (a, b) => {
@@ -21,6 +22,9 @@ export const insertReducer = (state, action) => {
 				return 0;
 			};
 			i = i.set('countries', new List(action.countries).sort(countryCmp));
+			break;
+		case 'HIDE_NOTIF':
+			i = i.set('insertWorked', 'LOL');
 			break;
 		default:
 			return state;
