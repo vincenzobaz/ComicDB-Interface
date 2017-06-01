@@ -36,6 +36,11 @@ SELECT P.publisher_id AS id, P.name, P.year_began, P.year_ended, P.url, P.notes,
 FROM Publishers P LEFT JOIN Countries C ON P.country_code = C.country_code
 WHERE P.name LIKE "%${t}%" OR P.notes LIKE "%${t}%"`;
 
+const stories = t => `\
+SELECT S.story_id AS id, S.title, S.feature, S.synopsis, S.notes, S.reprint_notes, ST.story_type_name, I.title
+FROM ((Stories S LEFT JOIN Story_types ST ON S.story_type_id = S.story_type_id) LEFT JOIN Issues I ON S.issue_id = I.issue_id)
+WHERE S.title LIKE "%${t}%" OR S.feature LIKE "%${t}%" OR S.synopsis LIKE "%${t}%" OR S.notes LIKE "%${t}%"`;
+
 const series = t => `\
 SELECT
     S.serie_id AS id,
@@ -95,6 +100,7 @@ const queries = {
     'Indicia Publishers': indicia_publishers,
     'Publishers': publishers,
     'Series': series,
+    'Stories': stories
 };
 
 module.exports = queries;

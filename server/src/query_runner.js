@@ -23,9 +23,9 @@ const prepareSimpleResult = (data, fields) => {
     }];
 };
 
-const prepareJson = (data, fields, flat) => {
+const prepareJson = (data, fields) => {
     if (data == null || data.length == 0) return data;
-    return flat ? prepareSimpleResult(data, fields) : prepareMultipleResults(data, fields);
+    return Array.isArray(fields[0]) ? prepareMultipleResults(data, fields) : prepareSimpleResult(data, fields);
 };
 
 
@@ -37,13 +37,13 @@ const run = (dbconnection, query, creq, cres, info = null) => {
             console.log('MYSQL ERROR');
             console.log(util.inspect(dberr));
             cres.sendStatus(400);
-            return;
-        }
+        } else {
         console.log('query completed');
-        cres.send({
-            info: info,
-            results: prepareJson(dbres, fields, query.indexOf(';') == -1)
-        });
+            cres.send({
+                info: info,
+                results: prepareJson(dbres, fields)
+            });
+        }
     });
 };
 
