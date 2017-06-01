@@ -1,20 +1,20 @@
 const codes = [
     `SELECT B.name
-FROM Brand_Groups B
-WHERE B.publisher_id IN (SELECT A.publisher_id
-                         FROM (SELECT COUNT(*) AS amount, I.publisher_id
- 							   FROM Indicia_Publishers I
- 							   WHERE I.country_code = (SELECT C.country_code FROM Countries C WHERE C.name = 'Belgium')
- GROUP BY I.publisher_id
- 				 ORDER BY amount DESC) AS A)`,
+FROM Brand_Groups B 
+INNER JOIN (SELECT I.publisher_id
+		   FROM Indicia_Publishers I 
+		   WHERE I.country_code = (SELECT C.country_code FROM Countries C WHERE C.name = 'Belgium') 				
+		   GROUP BY I.publisher_id
+		   ORDER BY Count(*) DESC) AS A ON B.publisher_id = A.publisher_id`,
 
-    `SELECT P.publisher_id, P.name
-FROM Publishers P
-WHERE P.publisher_id IN (SELECT S.published_by
-FROM Series S
-WHERE S.country_code IN (SELECT C.country_code
- FROM Countries C
- WHERE C.name = 'Denmark'))`,
+    `SELECT P.publisher_id, P.name 
+FROM Publishers P 
+INNER JOIN (SELECT DISTINCT(S.published_by)
+						FROM Series S 
+                        INNER JOIN Countries ON S.country_code = Countries.country_code
+                        INNER JOIN Publication_types ON S.publication_type = Publication_types.publication_type_id
+						WHERE Countries.name = 'Denmark' AND Publication_types.publication_type_name LIKE '%book%') AS A
+			ON P.publisher_id = A.published_by`,
 
     `SELECT S.name
 FROM Series S
@@ -38,14 +38,13 @@ FROM Publishers P
 WHERE P.publisher_id = I.publisher_id)
 GROUP BY I.name`,
 
-    `SELECT DISTINCT S.title
-FROM Stories S
-WHERE S.story_id IN (SELECT A.original_story_id
-   			   FROM (SELECT R.original_story_id, COUNT(*) AS Amount
-   		  		   FROM Story_reprint R
-         			   GROUP BY R.original_story_id
-         			   ORDER BY Amount  DESC) As A)
-LIMIT 10`,
+    `SELECT DISTINCT S.title, A.Amount
+FROM Stories S 
+INNER JOIN (SELECT R.original_story_id, COUNT(*) AS Amount
+		   FROM Story_reprint R
+		   GROUP BY R.original_story_id  
+		   ORDER BY Amount DESC
+		   LIMIT 10) As A ON S.story_id = A.original_story_id LIMIT 10`,
 
     `SELECT DISTINCT P.name
 FROM People P, Pencil_by D, Script_by W, Color_by C
