@@ -67,49 +67,66 @@ WHERE S.story_id IN (SELECT S2.story_id
       S.story_id NOT IN (SELECT R.original_story_id
                          FROM Story_reprint R)`,
 
-    `SELECT DISTINCT(SE.name)
+/*a*/    `SELECT DISTINCT(SE.name)
 FROM Series SE
-WHERE SE.serie_id IN (SELECT DISTINCT(I.serie_id)
-					FROM Issues I
-					WHERE I.issue_id IN (SELECT DISTINCT(S2.issue_id)
-										FROM Stories S2
-										WHERE S2.story_type_id != (SELECT S.story_type_id
-												                               FROM Stories S
-												                               GROUP BY S.story_type_id
-											 	                              ORDER BY COUNT(*) DESC
-												                              LIMIT 1))
-					GROUP BY I.issue_id
-                    			ORDER BY COUNT(*) DESC)`,
-    `SELECT Pub.name
+INNER JOIN (SELECT I.serie_id, COUNT(*)
+					  FROM Issues I
+					  INNER JOIN (SELECT DISTINCT(S2.issue_id)
+										   FROM Stories S2
+										   WHERE S2.story_type_id != (SELECT S.story_type_id
+																	  FROM Stories S
+																      GROUP BY S.story_type_id
+																      ORDER BY COUNT(*) DESC
+																      LIMIT 1)) AS X ON  I.issue_id = X.issue_id
+					 GROUP BY I.issue_id
+					 ORDER BY COUNT(*) DESC) AS Y ON SE.serie_id = Y.serie_id`,
+
+/*b*/    `SELECT Pub.name
 FROM Publishers Pub
-WHERE Pub.publisher_id IN (SELECT T.published_by
-						FROM (SELECT S.published_by, S.publication_type
-								FROM Series S
-								INNER JOIN Publication_types ON S.publication_type = Publication_types.publication_type_id) AS T
-						GROUP BY T.published_by
-						HAVING COUNT(DISTINCT T.publication_type) = (SELECT COUNT(DISTINCT P.publication_type_id)
-												                               FROM Publication_types P))`,
+INNER JOIN (SELECT T.published_by
+			FROM (SELECT S.published_by, S.publication_type
+				  FROM Series S
+				  INNER JOIN Publication_types ON S.publication_type = Publication_types.publication_type_id) AS T
+			GROUP BY T.published_by
+			HAVING COUNT(DISTINCT T.publication_type) = (SELECT COUNT(DISTINCT P.publication_type_id)
+														 FROM Publication_types P)) AS X ON Pub.publisher_id = X.published_by`,
                 
-    `SELECT DISTINCT(C.name)
+/*c*/    `SELECT DISTINCT(C.name)
 FROM Characters C
-INNER JOIN Has_character ON C.character_id = Has_character.character_id
-WHERE Has_character.story_id IN (SELECT R.original_story_id
-						  FROM Story_reprint R
-						  INNER JOIN Script_by ON R.original_story_id = Script_by.story_id
-						  WHERE Script_by.author_id = (SELECT P.people_id
-												  FROM People P
-												  WHERE P.name LIKE 'Alan Moore')
-						  GROUP BY R.original_story_id
-						  ORDER BY COUNT(*) DESC)
+INNER JOIN (SELECT HC.character_id, HC.story_id
+			FROM Has_character HC
+            INNER JOIN (SELECT R.original_story_id
+						 FROM Story_reprint R
+						 INNER JOIN Script_by ON R.original_story_id = Script_by.story_id
+						 WHERE Script_by.author_id = (SELECT P.people_id
+													   FROM People P
+													   WHERE P.name LIKE 'Alan Moore')
+						 GROUP BY R.original_story_id
+						 ORDER BY COUNT(*) DESC) AS Y ON HC.story_id = Y.original_story_id) AS X ON C.character_id = X.character_id
+
 LIMIT 10`,
 
-    `SELECT DISTINCT(P.name)
+/*d*/    `SELECT DISTINCT(P.name)
 FROM Stories S, People P, Script_by W, Pencil_by PB
 WHERE (S.synopsis LIKE '%nature%') AND S.story_id = W.story_id AND S.story_id = PB.story_id AND W.author_id = PB.drawer_id AND P.people_id = W.author_id`,
 
-`PLACEHOLDER`,
+/*e*/    `SELECT X.pname, X.lname, X.amount
+FROM
+(SELECT P.name AS pname, L.name AS lname, COUNT(L.name) AS amount,
+@rn := IF(@prev = P.name, @rn + 1, 1) AS rn,
+@prev := P.name
+FROM Publishers P, Series S, Languages L, (SELECT P.publisher_id, COUNT(*)
+											FROM Publishers P, Series S
+											WHERE P.publisher_id = S.published_by
+											GROUP BY P.publisher_id
+											ORDER BY COUNT(*) DESC
+											LIMIT 10) AS Y
+WHERE P.publisher_id = Y.publisher_id and P.publisher_id = S.published_by AND S.language_code = L.language_code
+GROUP BY S.published_by, L.name
+ORDER BY P.publisher_id, COUNT(L.name) DESC) AS X
+WHERE rn <= 3`,
 
-    `SELECT L.name, X.amount
+/*f*/    `SELECT L.name, X.amount
 FROM Languages L, (SELECT SE.language_code, Count(*) as amount
 					FROM Stories S, Issues I, Series SE
 					WHERE S.issue_id = I.issue_id AND I.serie_id = SE.serie_id 
@@ -120,29 +137,30 @@ FROM Languages L, (SELECT SE.language_code, Count(*) as amount
 WHERE L.language_code = X.language_code AND X.amount >= 10000
 ORDER BY X.amount DESC`,
 
-    `SELECT DISTINCT(ST.story_type_name)
+/*g*/    `SELECT DISTINCT(ST.story_type_name)
 FROM Story_types ST, Stories S, Issues I
 WHERE ST.story_type_id = S.story_type_id AND S.issue_id = I.issue_id 
 	AND I.serie_id NOT IN (SELECT SE.serie_id
 						   FROM Series SE
-						   WHERE SE.publication_type IN (SELECT P.publication_type_id
-														FROM Publication_types P
-														WHERE P.publication_type_name LIKE 'magazine')
-									AND SE.language_code IN (SELECT L.language_code
-															 FROM Languages L
-															 WHERE L.name LIKE 'Italian'))`,
+						   INNER JOIN (SELECT P.publication_type_id
+									   FROM Publication_types P
+									   WHERE P.publication_type_name LIKE 'magazine') AS X ON SE.publication_type = X.publication_type_id
+						   INNER JOIN (SELECT L.language_code
+									   FROM Languages L
+									   WHERE L.name LIKE 'Italian') AS Y ON SE.language_code = Y.language_code)`,
         
-    `SELECT X.name
-FROM (SELECT P.name, IP.indicia_publisher_id
+/*h*/    `SELECT X.name
+FROM (SELECT P.name, IP.indicia_publisher_id, W.story_id
 		FROM Script_by W, People P, Stories S, Issues I, Indicia_Publishers IP
-		WHERE W.author_id = P.people_id AND W.story_id IN (SELECT S.story_id
-												    FROM Stories S, Story_types ST
-											            WHERE S.story_type_id = ST.story_type_id AND ST.story_type_name LIKE 'cartoon')
+		WHERE W.author_id = P.people_id 
 		AND W.story_id = S.story_id AND S.issue_id = I.issue_id AND I.published_by = IP.indicia_publisher_id) AS X
+INNER JOIN (SELECT S.story_id
+			FROM Stories S, Story_types ST
+			WHERE S.story_type_id = ST.story_type_id AND ST.story_type_name LIKE 'cartoon') AS Y ON X.story_id = Y.story_id
 GROUP BY X.name
 HAVING COUNT(DISTINCT(X.indicia_publisher_id)) > 1`,
 
-    `SELECT B.name
+/*i*/    `SELECT B.name
 FROM Brand_Groups B
 INNER JOIN (SELECT IP.publisher_id, COUNT(*) as amount
 			FROM Indicia_Publishers IP
@@ -150,23 +168,36 @@ INNER JOIN (SELECT IP.publisher_id, COUNT(*) as amount
 ORDER BY amount DESC
 LIMIT 10`,
 
-    `SELECT IP.name, AVG(S.year_ended - S.year_began)
+/*j*/    `SELECT IP.name, AVG(S.year_ended - S.year_began)
 FROM Indicia_Publishers IP, Series S, Issues I
 WHERE IP.indicia_publisher_id = I.published_by AND I.serie_id = S.serie_id AND S.year_began IS NOT NULL AND S.year_ended IS NOT NULL
 GROUP BY IP.name
 ORDER BY AVG(S.year_ended - S.year_began) DESC`,
 
-    `SELECT IP.name, COUNT(*)
+/*k*/    `SELECT IP.name, COUNT(*)
 FROM Indicia_Publishers IP, Issues I, Series S
 WHERE IP.indicia_publisher_id = I.published_by AND S.first_issue_id = S.last_issue_id AND I.serie_id = S.serie_id
 GROUP BY IP.indicia_publisher_id
-ORDER BY COUNT(*) DESC`,
+ORDER BY COUNT(*) DESC
+LIMIT 10;`,
 
-    `PLACEHOLDER`,
+/*l*/    `SELECT DISTINCT(IP.name), Y.amount
+FROM Indicia_Publishers IP
+INNER JOIN (SELECT I.published_by, S.story_id
+			FROM Issues I, Stories S
+			WHERE I.issue_id = S.issue_id) AS X ON IP.publisher_id = X.published_by
+INNER JOIN (SELECT SB.story_id, COUNT(*) as amount
+			FROM Script_by SB
+			GROUP BY SB.story_id) AS Y ON X.story_id = Y.story_id
+ORDER BY Y.amount DESC
+LIMIT 10`,
 
-    `PLACEHOLDER`,
+/*m*/    `SELECT DISTINCT(C.name)
+FROM Characters C, Has_character HC, Stories S, Issues I, Indicia_Publishers IP
+WHERE IP.name LIKE '%Marvel%' AND IP.name LIKE '%DC%' AND IP.indicia_publisher_id = I.published_by AND I.issue_id = S.issue_id 
+	  AND S.story_id = HC.story_id AND HC.character_id = C.character_id`,
 
-    `SELECT S.name, COUNT(*)
+/*n*/    `SELECT S.name, COUNT(*)
 FROM Issues I, Series S
 WHERE I.serie_id = S.serie_id
 GROUP BY S.serie_id
