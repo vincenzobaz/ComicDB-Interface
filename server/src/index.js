@@ -8,6 +8,7 @@ const search = require('./search.js');
 const predef = require('./predef_query.js');
 const util = require('util');
 const deleteEntry = require('./delete.js');
+const run_query = require('./query_runner.js');
 
 const connection = mysql.createConnection(connectionParameters);
 
@@ -58,6 +59,16 @@ app.get('/predef', authentication, predef.list_queries);
 app.post('/predef', authentication, predef.perform_query(connection));
 
 app.post('/delete', authentication, (req, res) => deleteEntry(connection, req.body.tableName, req.body.id));
+
+app.post('/mostReprintedIssue', authentication, (req, res) => {
+  let q = `SELECT S.title
+           FROM Stories S, Story_reprint SR
+           WHERE S.issue_id = ${req.body.id} AND SR.original_story_id = S.story_id
+           GROUP BY SR.original_story_id
+           ORDER BY COUNT(*) DESC
+           LIMIT 1`;
+  run_query(connection, q, req, res, 22);
+});
 
 // Start server
 app.listen(3000, () => {

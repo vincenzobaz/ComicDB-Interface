@@ -28,5 +28,9 @@ export const receiveQueryList = ls => {
 
 export const querylist = () => dispatch => {
     return Server.fetchQueryList().then(ls => dispatch(receiveQueryList(ls)));
+};
 
+export const mostReprintedIssue = id => dispatch => {
+    dispatch(requestPredef(22));
+    return Server.mostReprintedIssue(id).then(res => dispatch(predefResponse(res)));
 };

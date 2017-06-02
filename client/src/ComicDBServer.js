@@ -96,6 +96,16 @@ function deleteEntry(tableName, id) {
     });
 }
 
+function mostReprintedIssue(id) {
+    return fetch(config.url + 'mostReprintedIssue', {
+        method: 'post',
+        headers: headers,
+        body: JSON.stringify({
+            id
+        })
+    }).then(r => r.json());
+}
+
 export const Server = {
     fetchTableList,
     insert,
@@ -104,5 +114,6 @@ export const Server = {
     fetchCountries,
     fetchQueryList,
     predef,
-    deleteEntry
+    deleteEntry,
+    mostReprintedIssue
 };

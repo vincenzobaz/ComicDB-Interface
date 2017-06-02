@@ -4,6 +4,7 @@ import {Accordion, Panel} from 'react-bootstrap';
 import {querylist, predefquery} from './actions/predefqueries.js';
 import {Map} from 'immutable';
 import {Query} from './components/PredefQueries/Query.js';
+import {MostReprintedIssue} from './components/PredefQueries/MostReprintedIssue.js';
 
 
 const PredefQueriesV = ({queryList, queriesDone, performQuery}) => {
@@ -19,6 +20,12 @@ const PredefQueriesV = ({queryList, queriesDone, performQuery}) => {
                              onClick={() => doQuery(i)}>
                              <Query index={i}/>
                         </Panel>)}
+                        <Panel
+                            header="Most reprinted story of an issue"
+                            eventKey={22}
+                            key={22}>
+                            <MostReprintedIssue/>
+                       </Panel>
                 </Accordion>
         </div>
     );

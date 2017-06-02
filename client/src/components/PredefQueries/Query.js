@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {ReactSpinner} from './../Spinner.js';
 import {ResultTable} from './../ResultTable.js';
+import {Map} from 'immutable';
 
 const QueryV = ({pending, result}) => {
     return (
@@ -12,7 +13,7 @@ const QueryV = ({pending, result}) => {
 };
 
 const mapStateToProps = (state, {index}) => {
-    const currPredef = state.get('predef').get(index);
+    const currPredef = state.get('predef', new Map()).get(index);
     return {
         pending: currPredef == null ? false : currPredef.get('pending'),
         result: currPredef == null ? {fieldNames: [], data: []} : currPredef.get('result')
