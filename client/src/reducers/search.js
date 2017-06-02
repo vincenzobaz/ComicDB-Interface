@@ -21,6 +21,9 @@ export const searchReducer = (state, action) => {
 		case 'SET_MAX_RESULTS':
 			s = s.set('numresults', parseInt(action.n));
 			break;
+		case 'TOGGLE_SHOW_ID':
+			s = s.set('showid', !s.get('showid', false));
+			break;
 		default:
 			return state;
 	}

@@ -42,3 +42,9 @@ export const search = args => dispatch => {
 export const deleteEntry = (tableName, id) => dispatch => {
 	return Server.deleteEntry(tableName, id);
 };
+
+export const toggleShowId = () => {
+	return {
+		type: 'TOGGLE_SHOW_ID'
+	};
+};

@@ -7,14 +7,14 @@ import {connect} from 'react-redux';
 import {tablelist} from './actions/index.js';
 import {ReactSpinner} from './components/Spinner.js';
 
-const SearchV = ({searchResults, searchPending}) => {
+const SearchV = ({searchResults, searchPending, showid}) => {
     return(
         <div className="search">
             <SearchInput />
             <Grid>
                 <Row>
                     {searchPending && <ReactSpinner />}
-                    {searchResults && <SearchResults results={searchResults}/>}
+                    {searchResults && <SearchResults results={searchResults} showid={showid}/>}
                 </Row>
             </Grid>
         </div>
@@ -29,7 +29,8 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
     return {
         searchResults: state.get('search').get('searchResults', false),
-        searchPending: state.get('search').get('pending', false)
+        searchPending: state.get('search').get('pending', false),
+        showid: state.get('search').get('showid', false)
     };
 };
 

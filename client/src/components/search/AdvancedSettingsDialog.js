@@ -1,10 +1,10 @@
 import React from 'react';
 import {Button, Checkbox, ControlLabel, Col, Form, FormControl, FormGroup, Modal} from 'react-bootstrap';
 import {Map, OrderedMap} from 'immutable';
-import {searchToggleTable, toggleSearchSettings, maxResults} from '../../actions/search.js';
+import {searchToggleTable, toggleSearchSettings, maxResults, toggleShowId} from '../../actions/search.js';
 import {connect} from 'react-redux';
 
-const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose, setMaxResults}) => {
+const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose, setMaxResults, showid, toggleShowId}) => {
     const setMaxRes = e => setMaxResults(e.target.value);
     const poss = [25, 50, 75, 100];
     return(
@@ -33,6 +33,7 @@ const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose, set
                         </Col>
                     </FormGroup>
                 </Form>
+            <Checkbox checked={showid} onChange={toggleShowId}> Show IDs </Checkbox>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={onClose}>
@@ -46,7 +47,8 @@ const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose, set
 const mapStateToProps = (state) => {
     return {
         show: state.get('search').get('showAdvancedSettings', false),
-        enabledTables: state.get('search').get('enabledTables', new OrderedMap())
+        enabledTables: state.get('search').get('enabledTables', new OrderedMap()),
+        showid: state.get('search').get('showid', false)
     };
 };
 
@@ -54,7 +56,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         toggleTable: table => dispatch(searchToggleTable(table)),
         onClose: () => dispatch(toggleSearchSettings()),
-        setMaxResults: n => dispatch(maxResults(n))
+        setMaxResults: n => dispatch(maxResults(n)),
+        toggleShowId: () => dispatch(toggleShowId())
     };
 };
 
