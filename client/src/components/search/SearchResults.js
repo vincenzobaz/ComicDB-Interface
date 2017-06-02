@@ -10,7 +10,7 @@ export const SearchResults = ({results}) => {
                 <h2>Results</h2>
                 {results.filter(t => t.data.length != 0).map(t =>
                                 <Panel key={prettyTableName(t.tableName)} header={t.tableName} bsStyle="info">
-                                    <ResultTable tableName={t.tableName} fieldNames={t.fieldNames} data={t.data}/>
+                                    <ResultTable tableName={t.tableName} fieldNames={t.fieldNames} data={t.data} deletable={true}/>
                                 </Panel>)}
             </Well>
         </div>

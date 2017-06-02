@@ -6,7 +6,7 @@ import {ResultTable} from './../ResultTable.js';
 const QueryV = ({pending, result}) => {
     return (
         <div>
-            {pending ? <ReactSpinner /> : <ResultTable fieldNames={result.fieldNames} data={result.data} />}
+            {pending ? <ReactSpinner /> : <ResultTable fieldNames={result.fieldNames} data={result.data} deletable={false} />}
         </div>
     );
 };
