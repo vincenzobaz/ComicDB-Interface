@@ -1,3 +1,5 @@
+const util = require('util');
+
 const idField = {
     'Issues': 'issue_id',
     'Countries' : 'country_code',
@@ -9,11 +11,12 @@ const idField = {
 };
 
 const deleteEntry = (db, tableName, id) => {
-    db.query(`DELETE FROM ${tableName} WHERE ${idField[tableName]} = ${id}`, (dberr, dbres) => {
+    const query = `DELETE FROM ${tableName} WHERE ${idField[tableName]} = ${id}`;
+    console.log('DELETE QUERY ' + query);
+    db.query(query, (dberr, dbres) => {
         if (dberr != null) {
             console.log('MYSQL ERROR');
             console.log(util.inspect(dberr));
-            cres.sendStatus(400);
             return;
         }
         console.log('Deleted ' + dbres.affectedRows + ' rows');

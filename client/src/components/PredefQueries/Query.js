@@ -7,7 +7,7 @@ import {Map} from 'immutable';
 const QueryV = ({pending, result}) => {
     return (
         <div>
-            {pending ? <ReactSpinner /> : <ResultTable fieldNames={result.fieldNames} data={result.data} deletable={false} />}
+            {pending ? <ReactSpinner /> : <ResultTable fieldNames={result.fieldNames} data={result.data} deletable={false} showid={false} />}
         </div>
     );
 };
