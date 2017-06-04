@@ -20,6 +20,7 @@
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
+    "react-select": "^1.0.0-rc.5",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "spin.js": "^2.3.2"
