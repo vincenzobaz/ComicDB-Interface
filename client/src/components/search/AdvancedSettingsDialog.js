@@ -7,6 +7,8 @@ import {connect} from 'react-redux';
 const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose, setMaxResults, showid, toggleShowId}) => {
     const setMaxRes = e => setMaxResults(e.target.value);
     const poss = [25, 50, 75, 100];
+    const selectAll = () => enabledTables.forEach((enabled, table) => !enabled && toggleTable(table));
+    const clearAll = () => enabledTables.forEach((enabled, table) => enabled && toggleTable(table));
     return(
         <Modal show={show}>
             <Modal.Header>
@@ -21,6 +23,8 @@ const AdvancedSettingsDialogV = ({enabledTables, toggleTable, show, onClose, set
                             onChange={toggleTable.bind(null, table)}>
                                 {table}
                         </Checkbox>)}
+                <Button onClick={selectAll}>Select all</Button>
+                <Button onClick={clearAll}>Clear all</Button>
                 <Form horizontal>
                     <FormGroup>
                         <Col componentClass={ControlLabel} sm={8}>
