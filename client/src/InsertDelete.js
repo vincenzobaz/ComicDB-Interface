@@ -3,8 +3,7 @@ import {Button, Col, Grid, Row} from 'react-bootstrap';
 import {TablePicker} from './components/insertdel/TablePicker.js';
 import {connect} from 'react-redux';
 import {InsertPeople} from './components/insertdel/InsertPeople.js';
-import {InsertStories} from './components/insertdel/InsertStories.js';
-import {InsertIssues} from './components/insertdel/InsertIssues.js';
+import {InsertBrandGroup} from './components/insertdel/InsertBrandGroup.js';
 import {InsertPublishers} from './components/insertdel/InsertPublishers.js';
 import {hideNotif} from './actions/insertdel.js';
 
@@ -29,8 +28,7 @@ const InsertDeleteV = ({activePanel, pending, succesful, hideNotif}) => {
 const chooseMask = {
     'Publishers': <InsertPublishers/>,
     'People': <InsertPeople/>,
-    //'Stories': <InsertStories/>,
-    //'Issues': <InsertIssues/>
+    'Brand Groups' : <InsertBrandGroup/>
 };
 
 const mapStateToProps = (state) => {

@@ -14,7 +14,7 @@ const MainWindowV = ({loggedIn}) => {
                     <PageHeader>ComicDB Web Interface</PageHeader>
                     <Tabs id="tab-chooser" justified={true}>
                         <Tab eventKey={'search'} title="Search"><Search/></Tab>
-                        <Tab eventKey={'insdel'} title="Insert/Delete" ><InsertDelete/></Tab>
+                        <Tab eventKey={'insdel'} title="Insert" ><InsertDelete/></Tab>
                         <Tab eventKey={'prefqueries'} title="Predefined Queries"> <PredefQueries/></Tab>
                     </Tabs>
                 </Grid>

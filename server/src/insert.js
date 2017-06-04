@@ -2,7 +2,8 @@ const mysql = require('mysql');
 
 const sql = {
     'People' : 'INSERT into People (name) VALUES (?)',
-    'Publisher' : 'INSERT into Publishers (name, year_began, year_ended, notes, url, country_code) VALUES (?,?,?,?,?,?)'
+    'Publisher' : 'INSERT into Publishers (name, year_began, year_ended, notes, url, country_code) VALUES (?,?,?,?,?,?)',
+    'Brand Groups': 'INSERT into Brand_Groups (name, year_began, year_ended, notes, url, publisher_id) VALUES(?,?,?,?,?,?)'
 };
 
 const queryCallback = (req, res) => (dberr, dbres) => {

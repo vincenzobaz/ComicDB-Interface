@@ -1,16 +1,17 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, Col, ControlLabel, Form, FormControl, FormGroup} from 'react-bootstrap';
-import {countriesList, insert} from './../../actions/insertdel.js';
+import {insert} from './../../actions/insertdel.js';
+import {PublisherPicker} from './PublisherPicker.js';
 
-class InsertPublishersV extends React.Component {
+export class InsertBrandGroupV extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
             year_began: '',
             year_ended: '',
-            country_code: '',
+            publisher: null,
             notes: '',
             url: ''
         };
@@ -30,6 +31,7 @@ class InsertPublishersV extends React.Component {
         return this.state.name != '' &&
              this.state.year_began != '' &&
              this.state.year_ended != '' &&
+             this.state.publisher != null &&
              this.validYearsRange() === 'success';
     }
 
@@ -39,7 +41,7 @@ class InsertPublishersV extends React.Component {
             name: this.state.name,
             year_began: this.state.year_began,
             year_ended: this.state.year_ended,
-            country_code: this.state.country_code,
+            publisher_id: this.state.publisher.value,
             notes: this.state.notes,
             url: this.state.url
         });
@@ -63,15 +65,16 @@ class InsertPublishersV extends React.Component {
         const saveYearBegan = e => this.setState({year_began: parseInt(e.target.value)});
         const saveYearEnded = e => this.setState({year_ended: parseInt(e.target.value)});
         const saveUrl = e => this.setState({url: e.target.value});
-        const saveCountryCode = e => this.setState({country_code: e.target.value});
+        const savePublisher = pub => this.setState({publisher: pub});
 
         const years = [];
         for (let i = 1700; i <= (new Date()).getFullYear(); ++i) {
             years.push(i);
         }
+
         return (
             <div className="insertpublishers">
-                <h2> Insert a Publisher </h2>
+                <h2>Insert a Brand Group</h2>
                 <Form horizontal>
                     <FormGroup>
                         <Col componentClass={ControlLabel} sm={2}>
@@ -102,20 +105,7 @@ class InsertPublishersV extends React.Component {
                             </FormControl>
                         </Col>
                     </FormGroup>
-                    <FormGroup>
-                        <Col componentClass={ControlLabel} sm={2}>
-                            Country
-                        </Col>
-                        <Col sm={10}>
-                            <FormControl componentClass="select" onChange={saveCountryCode.bind(this)}>
-                                {this.props.countries.map(c => <option
-                                     key={c['country_code']}
-                                     value={c['country_code']}>
-                                        {c['name']}</option> )}
-                            </FormControl>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup>
+                   <FormGroup>
                         <Col componentClass={ControlLabel} sm={2}>
                             Url
                         </Col>
@@ -138,6 +128,17 @@ class InsertPublishersV extends React.Component {
                                 onChange={(saveNotes.bind(this))}/>
                         </Col>
                     </FormGroup>
+                    <FormGroup>
+                        <Col componentClass={ControlLabel} sm={2}>
+                            Publisher
+                        </Col>
+                        <Col sm={10}>
+                            <PublisherPicker
+                                onChange={savePublisher.bind(this)}
+                                curr={this.state.publisher}
+                                />
+                        </Col>
+                    </FormGroup>
                     <Button
                         type="submit"
                         disabled={!this.canSubmit()}
@@ -150,17 +151,10 @@ class InsertPublishersV extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        countries: state.get('insertdel').get('countries', [])
-    };
-};
-
 const mapDispatchToProps = dispatch => {
-    dispatch(countriesList());
     return {
-        submit: publisher => dispatch(insert('Publisher', publisher))
+        submit: brandgroup => dispatch(insert('Brand Groups', brandgroup))
     };
 };
 
-export const InsertPublishers = connect(mapStateToProps, mapDispatchToProps)(InsertPublishersV);
+export const InsertBrandGroup = connect(null, mapDispatchToProps)(InsertBrandGroupV);
