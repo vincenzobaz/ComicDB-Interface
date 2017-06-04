@@ -21,7 +21,7 @@ const PredefQueriesV = ({queryList, queriesDone, performQuery}) => {
                              <Query index={i}/>
                         </Panel>)}
                         <Panel
-                            header="Most reprinted story of an issue"
+                            header="3o) Most reprinted story of an issue"
                             eventKey={22}
                             key={22}>
                             <MostReprintedIssue/>

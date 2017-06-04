@@ -72,8 +72,8 @@ FROM Series SE
 INNER JOIN (SELECT I.serie_id, COUNT(*)
 					  FROM Issues I
 					  INNER JOIN (SELECT DISTINCT(S2.issue_id)
-										   FROM Stories S2
-										   WHERE S2.story_type_id != (SELECT S.story_type_id
+										   FROM Stories S2 USE INDEX(issue_id_index)
+										   WHERE S2.story_type_id != (SELECT S.story_type_id 
 																	  FROM Stories S
 																      GROUP BY S.story_type_id
 																      ORDER BY COUNT(*) DESC
@@ -126,16 +126,13 @@ GROUP BY S.published_by, L.name
 ORDER BY P.publisher_id, COUNT(L.name) DESC) AS X
 WHERE rn <= 3`,
 
-/*f*/    `SELECT L.name, X.amount
-FROM Languages L, (SELECT SE.language_code, Count(*) as amount
-					FROM Stories S, Issues I, Series SE
-					WHERE S.issue_id = I.issue_id AND I.serie_id = SE.serie_id 
-							AND SE.publication_type IN (SELECT P.publication_type_id
-											             FROM Publication_types P
-												    WHERE P.publication_type_name LIKE 'magazine')
-												    GROUP BY SE.language_code) as X
-WHERE L.language_code = X.language_code AND X.amount >= 10000
-ORDER BY X.amount DESC`,
+/*f*/    `SELECT *
+FROM (SELECT L.name, Count(*) as amount
+		FROM Stories S, Issues I, Series SE, Publication_types P, Languages L
+		WHERE S.issue_id = I.issue_id AND I.serie_id = SE.serie_id AND P.publication_type_name LIKE 'magazine' AND P.publication_type_id = SE.publication_type AND L.language_code = SE.language_code
+		GROUP BY SE.language_code
+		ORDER BY COUNT(*) DESC) AS X
+WHERE X.amount >= 10000`,
 
 /*g*/    `SELECT DISTINCT(ST.story_type_name)
 FROM Story_types ST, Stories S, Issues I
@@ -181,15 +178,13 @@ GROUP BY IP.indicia_publisher_id
 ORDER BY COUNT(*) DESC
 LIMIT 10;`,
 
-/*l*/    `SELECT DISTINCT(IP.name), Y.amount
-FROM Indicia_Publishers IP
-INNER JOIN (SELECT I.published_by, S.story_id
-			FROM Issues I, Stories S
-			WHERE I.issue_id = S.issue_id) AS X ON IP.publisher_id = X.published_by
-INNER JOIN (SELECT SB.story_id, COUNT(*) as amount
-			FROM Script_by SB
-			GROUP BY SB.story_id) AS Y ON X.story_id = Y.story_id
-ORDER BY Y.amount DESC
+/*l*/    `SELECT DISTINCT(IP.name)
+FROM Indicia_Publishers IP, Issues I, Stories S
+INNER JOIN (SELECT SB.story_id
+			FROM  Script_by SB
+			GROUP BY SB.story_id
+			ORDER BY COUNT(*) DESC) AS X ON X.story_id = S.story_id
+WHERE I.issue_id = S.issue_id AND IP.publisher_id = I.published_by
 LIMIT 10`,
 
 /*m*/    `SELECT DISTINCT(C.name)
@@ -208,75 +203,75 @@ LIMIT 5`
 
 const queries = [
     {
-        description: 'Brand group names with the highest number of Belgian indicia publishers.',
+        description: '2a) Brand group names with the highest number of Belgian indicia publishers.',
         code: codes[0]
     }, {
-        description: 'IDs and names of publishers of Danish book series',
+        description: '2b) IDs and names of publishers of Danish book series',
         code: codes[1]
     }, {
-        description: 'Names of all Swiss series that have been published in magazines',
+        description: '2c) Names of all Swiss series that have been published in magazines',
         code: codes[2]
     }, {
-        description: 'Number of issues published each year starting from 1990',
+        description: '2d) Number of issues published each year starting from 1990',
         code: codes[3]
     }, {
-        description: 'Number of series for each indicia publisher whose name resembles ‘DC comics’',
+        description: '2e) Number of series for each indicia publisher whose name resembles ‘DC comics’',
         code: codes[4]
     }, {
-        description: 'Titles of the 10 most reprinted stories',
+        description: '2f) Titles of the 10 most reprinted stories',
         code: codes[5]
     }, {
-        description: 'Artists that have scripted, drawn, and colored at least one of the stories they were involved in',
+        description: '2g) Artists that have scripted, drawn, and colored at least one of the stories they were involved in',
         code: codes[6]
     }, {
-        description: 'All non-reprinted stories involving Batman as a non-featured character',
+        description: '2h) All non-reprinted stories involving Batman as a non-featured character',
         code: codes[7]
     }, {
-        description: 'Names of the series that have the highest number of issues which contain a story whose type\
+        description: '3a) Names of the series that have the highest number of issues which contain a story whose type\
          is not the one occurring most frequently in the database',
         code: codes[8]
     }, {
-        description: 'Names of publishers who have series with all series types',
+        description: '3b) Names of publishers who have series with all series types',
         code: codes[9]
     }, {
-        description: '10 most-reprinted characters from Alan Moore\'s stories',
+        description: '3c) 10 most-reprinted characters from Alan Moore\'s stories',
         code: codes[10]
     }, {
-        description: 'Writers of nature-related stories that have also done the pencilwork\
+        description: '3d) Writers of nature-related stories that have also done the pencilwork\
         in all their nature-related stories',
         code: codes[11]
     }, {
-        description: 'For each of the top-10 publishers in terms of published series, print the 3\
+        description: '3e) For each of the top-10 publishers in terms of published series, print the 3\
          most popular languages of their series',
         code: codes[12]
     }, {
-        description: 'Languages that have more than 10000 original stories published in magazines\
+        description: '3f) Languages that have more than 10000 original stories published in magazines\
          along with the number of those stories',
         code: codes[13]
     }, {
-        description: 'All story types that have not been published as a part of Italian magazine series',
+        description: '3g) All story types that have not been published as a part of Italian magazine series',
         code: codes[14]
     }, {
-        description: 'Writers of cartoon stories who have worked as writers for more than one \
+        description: '3h) Writers of cartoon stories who have worked as writers for more than one \
         indicia publisher',
         code: codes[15]
     }, {
-        description: 'The 10 brand groups with the highest number of indicia publiser.',
+        description: '3i) The 10 brand groups with the highest number of indicia publiser.',
         code: codes[16]
     }, {
-        description: 'The average series length (in term of years) per indicia publisher',
+        description: '3j) The average series length (in term of years) per indicia publisher',
         code: codes[17]
     }, {
-        description: 'The top 10 indicia publishers that have published the most single-issue series',
+        description: '3k) The top 10 indicia publishers that have published the most single-issue series',
         code: codes[18]
     }, {
-        description: 'The 10 indicia publishers with the highest number of script writers in a single story',
+        description: '3l) The 10 indicia publishers with the highest number of script writers in a single story',
         code: codes[19]
     }, {
-        description: 'All Marvel heroes that appear in Marvel-DC story crossover',
+        description: '3m) All Marvel heroes that appear in Marvel-DC story crossover',
         code: codes[20]
     }, {
-        description: 'The top 5 series with most issues',
+        description: '3n) The top 5 series with most issues',
         code: codes[21]
     }
 ];
