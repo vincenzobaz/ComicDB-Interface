@@ -25,7 +25,7 @@ S.publication_type = (SELECT P.publication_type_id
     FROM Publication_types P
     WHERE P.publication_type_name = 'magazine')`,
 
-    `SELECT Count(*)
+    `SELECT Year(I.publication_date), Count(*)
 FROM Issues I
 WHERE Year(I.publication_date) >= 1990
 GROUP BY Year(I.publication_date)`,
